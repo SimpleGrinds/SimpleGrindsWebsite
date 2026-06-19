@@ -1,0 +1,401 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>French Press — SIMPLGRINDS</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#EFEEE9;--bg-2:#E7E5DE;--surface:#FAF9F6;--ink:#1A1714;--ink-soft:#463F38;
+  --muted:#7C7268;--line:rgba(26,23,20,0.12);--line-soft:rgba(26,23,20,0.07);
+  --accent:#A8551F;--accent-2:#C98A3C;--good:#5C6E3A;
+  --dark:#16130F;--dark-2:#1E1A15;--dark-3:#272118;
+  --dark-line:rgba(237,231,221,0.13);--on-dark:#ECE6DC;
+  --on-dark-soft:#C7BDB0;--on-dark-muted:#8C8275;
+  --r:10px;--container:1180px;--ease:cubic-bezier(.22,.61,.36,1);
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:"IBM Plex Sans",system-ui,-apple-system,sans-serif;font-size:17px;line-height:1.65;-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility;overflow-x:hidden}
+h1,h2,h3,h4{font-family:"Space Grotesk",system-ui,sans-serif;font-weight:600;letter-spacing:-0.02em;line-height:1.05;margin:0}
+p{margin:0}
+a{color:inherit;text-decoration:none}
+button{font-family:inherit;cursor:pointer;border:none;background:none;color:inherit}
+::selection{background:var(--accent);color:#fff}
+:focus-visible{outline:2px solid var(--accent);outline-offset:3px;border-radius:4px}
+
+.container{max-width:var(--container);margin:0 auto;padding:0 28px}
+.section{padding:clamp(72px,10vw,132px) 0;position:relative}
+.section--alt{background:var(--bg-2)}
+.eyebrow{font-family:"IBM Plex Mono",monospace;font-size:.72rem;font-weight:500;text-transform:uppercase;letter-spacing:.2em;color:var(--muted);display:inline-flex;align-items:center;gap:.6em}
+.eyebrow::before{content:"";width:18px;height:1px;background:var(--accent);display:inline-block}
+.sec-head{max-width:680px;margin-bottom:clamp(36px,5vw,64px)}
+.sec-head h2{font-size:clamp(1.9rem,4.4vw,3.1rem);margin:18px 0 0}
+.sec-head .lede{margin-top:18px;color:var(--ink-soft);font-size:1.06rem;max-width:60ch}
+.reveal{opacity:0;transform:translateY(22px);transition:opacity .7s var(--ease),transform .7s var(--ease)}
+.reveal.in{opacity:1;transform:none}
+
+/* NAV */
+.nav{position:sticky;top:0;z-index:60;background:rgba(239,238,233,.82);backdrop-filter:blur(14px);border-bottom:1px solid var(--line)}
+.nav-inner{max-width:var(--container);margin:0 auto;padding:0 28px;height:64px;display:flex;align-items:center;justify-content:space-between;gap:24px}
+.brand{display:flex;align-items:baseline;gap:.5ch;font-family:"Space Grotesk",sans-serif;font-weight:700;font-size:1.18rem;letter-spacing:.02em}
+.brand .dot{width:7px;height:7px;border-radius:50%;background:var(--accent);display:inline-block;transform:translateY(-1px)}
+.brand small{font-family:"IBM Plex Mono",monospace;font-weight:400;font-size:.62rem;letter-spacing:.16em;color:var(--muted);text-transform:uppercase;margin-left:.4ch}
+.nav-links{display:flex;align-items:center;gap:4px}
+.nav-links a{font-family:"IBM Plex Mono",monospace;font-size:.78rem;letter-spacing:.04em;padding:8px 12px;border-radius:7px;color:var(--ink-soft);transition:background .2s,color .2s}
+.nav-links a:hover{background:var(--line-soft);color:var(--ink)}
+.nav-links a.active{color:var(--accent)}
+.nav-cta{font-family:"IBM Plex Mono",monospace;font-size:.76rem;letter-spacing:.05em;padding:9px 16px;border:1px solid var(--ink);border-radius:8px;background:var(--ink);color:var(--bg);transition:transform .15s,opacity .2s}
+.nav-cta:hover{transform:translateY(-1px);opacity:.9}
+.nav-toggle{display:none;width:42px;height:42px;border:1px solid var(--line);border-radius:9px;align-items:center;justify-content:center}
+.nav-toggle span,.nav-toggle span::before,.nav-toggle span::after{content:"";display:block;width:18px;height:1.6px;background:var(--ink);position:relative;transition:transform .25s}
+.nav-toggle span::before{position:absolute;top:-6px}
+.nav-toggle span::after{position:absolute;top:6px}
+.nav.open .nav-toggle span{background:transparent}
+.nav.open .nav-toggle span::before{transform:translateY(6px) rotate(45deg)}
+.nav.open .nav-toggle span::after{transform:translateY(-6px) rotate(-45deg)}
+
+/* HERO */
+.hero{padding:clamp(64px,10vw,130px) 0 clamp(56px,8vw,96px);position:relative;overflow:hidden}
+.hero-grid{display:grid;grid-template-columns:1.15fr .85fr;gap:56px;align-items:center}
+.hero h1{font-size:clamp(2.7rem,7.4vw,5.6rem);font-weight:600;letter-spacing:-0.035em}
+.hero h1 em{font-style:normal;color:var(--accent)}
+.hero .sub{margin-top:26px;font-size:clamp(1.05rem,1.6vw,1.22rem);color:var(--ink-soft);max-width:46ch}
+.hero-meta{margin-top:34px;display:flex;flex-wrap:wrap;gap:10px}
+.hero-meta a{font-family:"IBM Plex Mono",monospace;font-size:.8rem;letter-spacing:.04em;padding:11px 18px;border-radius:9px;border:1px solid var(--ink);transition:transform .15s,background .2s,color .2s}
+.hero-meta a.primary{background:var(--ink);color:var(--bg)}
+.hero-meta a.primary:hover{transform:translateY(-2px)}
+.hero-meta a.ghost:hover{background:var(--ink);color:var(--bg)}
+
+/* SPEC CARD */
+.spec-card{background:var(--dark);color:var(--on-dark);border-radius:16px;padding:26px;box-shadow:0 30px 60px -30px rgba(26,23,20,.55);border:1px solid var(--dark-line);position:relative;overflow:hidden}
+.spec-card::before{content:"";position:absolute;inset:0;background:radial-gradient(120% 80% at 80% 0%,rgba(201,138,60,.16),transparent 60%);pointer-events:none}
+.spec-top{display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid var(--dark-line);padding-bottom:16px;margin-bottom:18px}
+.spec-top .label{font-family:"IBM Plex Mono",monospace;font-size:.66rem;letter-spacing:.18em;text-transform:uppercase;color:var(--on-dark-muted)}
+.spec-badge{font-family:"IBM Plex Mono",monospace;font-size:.62rem;letter-spacing:.06em;padding:4px 10px;border-radius:999px;background:rgba(168,85,31,.25);color:var(--accent-2);border:1px solid rgba(201,138,60,.3)}
+.spec-name{font-family:"Space Grotesk",sans-serif;font-size:1.4rem;font-weight:600;margin-bottom:4px}
+.spec-blurb{font-size:.9rem;color:var(--on-dark-soft);margin-bottom:20px}
+.spec-rows{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.spec-rows .cell{background:var(--dark-2);border:1px solid var(--dark-line);border-radius:10px;padding:12px 14px}
+.spec-rows .cell .k{font-family:"IBM Plex Mono",monospace;font-size:.6rem;letter-spacing:.14em;text-transform:uppercase;color:var(--on-dark-muted)}
+.spec-rows .cell .v{font-family:"IBM Plex Mono",monospace;font-size:1.15rem;font-weight:500;color:var(--on-dark);margin-top:3px}
+.spec-rows .cell .v b{color:var(--accent-2);font-weight:600}
+
+/* TIMELINE */
+.timeline{display:flex;flex-direction:column;gap:0;position:relative}
+.timeline::before{content:"";position:absolute;left:27px;top:0;bottom:0;width:1px;background:var(--line)}
+.tl-row{display:grid;grid-template-columns:56px 1fr;gap:24px;padding:28px 0;position:relative}
+.tl-dot{width:56px;display:flex;justify-content:center;align-items:flex-start;padding-top:4px;position:relative;z-index:1}
+.tl-dot i{width:14px;height:14px;border-radius:50%;background:var(--bg);border:2px solid var(--accent);display:block;margin-top:3px}
+.tl-dot.done i{background:var(--accent)}
+.tl-time{font-family:"IBM Plex Mono",monospace;font-size:.68rem;letter-spacing:.1em;text-transform:uppercase;color:var(--accent);margin-bottom:6px}
+.tl-body h4{font-size:1.12rem;margin-bottom:6px}
+.tl-body p{font-size:.94rem;color:var(--ink-soft);line-height:1.6}
+.tl-body .note{margin-top:10px;font-family:"IBM Plex Mono",monospace;font-size:.76rem;color:var(--muted);background:var(--bg-2);border:1px solid var(--line);border-radius:8px;padding:10px 14px}
+
+/* PARAMS */
+.param-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
+.param-card{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:20px 18px}
+.param-card .pk{font-family:"IBM Plex Mono",monospace;font-size:.6rem;letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
+.param-card .pv{font-family:"IBM Plex Mono",monospace;font-size:1.5rem;font-weight:600;margin-top:8px;line-height:1.1;color:var(--ink)}
+.param-card .pd{font-size:.86rem;color:var(--ink-soft);margin-top:8px;line-height:1.45}
+
+/* TIPS */
+.tips-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+.tip-card{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:24px}
+.tip-card h4{font-size:1rem;margin-bottom:10px}
+.tip-card p{font-size:.9rem;color:var(--ink-soft);line-height:1.55}
+
+/* FOOTER */
+.footer{background:var(--dark);color:var(--on-dark);padding:64px 0 40px}
+.foot-grid{display:grid;grid-template-columns:1.4fr 1fr 1fr;gap:40px;padding-bottom:40px;border-bottom:1px solid var(--dark-line)}
+.foot-brand .brand{color:var(--on-dark)}
+.foot-brand p{color:var(--on-dark-soft);font-size:.9rem;margin-top:14px;max-width:36ch}
+.foot-col h5{font-family:"IBM Plex Mono",monospace;font-size:.64rem;letter-spacing:.16em;text-transform:uppercase;color:var(--on-dark-muted);margin:0 0 14px;font-weight:500}
+.foot-col a{display:block;color:var(--on-dark-soft);font-size:.9rem;padding:5px 0;transition:color .15s}
+.foot-col a:hover{color:var(--accent-2)}
+.foot-bottom{display:flex;justify-content:space-between;align-items:center;padding-top:24px;flex-wrap:wrap;gap:12px}
+.foot-bottom p{font-family:"IBM Plex Mono",monospace;font-size:.68rem;color:var(--on-dark-muted);letter-spacing:.04em}
+
+@media(max-width:980px){
+  .hero-grid{grid-template-columns:1fr;gap:40px}
+  .param-grid{grid-template-columns:1fr 1fr}
+  .tips-grid{grid-template-columns:1fr 1fr}
+  .foot-grid{grid-template-columns:1fr 1fr}
+}
+@media(max-width:760px){
+  body{font-size:16px}
+  .nav-links,.nav-cta{display:none}
+  .nav-toggle{display:flex}
+  .nav.open .nav-links{display:flex;flex-direction:column;position:absolute;top:64px;left:0;right:0;background:var(--bg);border-bottom:1px solid var(--line);padding:14px 28px;gap:2px}
+  .nav.open .nav-links a{padding:13px 8px;font-size:.9rem}
+  .nav.open .nav-cta{display:block;margin-top:8px;text-align:center}
+  .timeline::before{left:19px}
+  .tl-row{grid-template-columns:40px 1fr}
+  .tips-grid{grid-template-columns:1fr}
+  .foot-grid{grid-template-columns:1fr}
+}
+@media(prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation:none!important;transition:none!important;scroll-behavior:auto!important}
+  .reveal{opacity:1;transform:none}
+}
+</style>
+</head>
+<body>
+
+<header class="nav" id="nav">
+  <div class="nav-inner">
+    <a href="groundwork.html" class="brand">SIMPLGRINDS<span class="dot"></span><small>FILTER&nbsp;CO.</small></a>
+    <nav class="nav-links" aria-label="Primary">
+      <a href="groundwork.html">Home</a>
+      <a href="groundwork-brewlab.html">Pour-over</a>
+      <a href="groundwork-espresso.html">Espresso</a>
+      <a href="groundwork-kcup.html">K-Cup</a>
+      <a href="groundwork-frenchpress.html" class="active">French Press</a>
+    </nav>
+    <a href="groundwork-brewlab.html" class="nav-cta">Open the lab</a>
+    <button class="nav-toggle" id="navToggle" aria-label="Toggle menu" aria-expanded="false"><span></span></button>
+  </div>
+</header>
+
+<main>
+
+<section class="hero" id="top">
+  <div class="container">
+    <div class="hero-grid">
+      <div class="reveal">
+        <span class="eyebrow">Immersion brewing</span>
+        <h1>Bold, full-bodied, <em>unforgettable.</em></h1>
+        <p class="sub">The French press is the most forgiving brew method you'll own — and the richest. Coarse grounds, four minutes, and one slow plunge. That's all it takes.</p>
+        <div class="hero-meta">
+          <a href="#guide" class="primary">Start the guide ↓</a>
+          <a href="groundwork.html" class="ghost">All methods</a>
+        </div>
+      </div>
+      <div class="reveal">
+        <div class="spec-card">
+          <div class="spec-top">
+            <span class="label">French Press · parameters</span>
+            <span class="spec-badge">Immersion</span>
+          </div>
+          <div class="spec-name">French Press</div>
+          <div class="spec-blurb">Full immersion with a metal mesh. Heavy-bodied, oily, and nothing gets filtered but the grounds.</div>
+          <div class="spec-rows">
+            <div class="cell"><div class="k">Dose → Water</div><div class="v"><b>30g</b> → 450g</div></div>
+            <div class="cell"><div class="k">Grind</div><div class="v">Coarse</div></div>
+            <div class="cell"><div class="k">Water temp</div><div class="v">94°C</div></div>
+            <div class="cell"><div class="k">Total time</div><div class="v">4:00</div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="params">
+  <div class="container">
+    <div class="sec-head reveal">
+      <span class="eyebrow">Key parameters</span>
+      <h2>The four numbers that run the recipe.</h2>
+      <p class="lede">French press is forgiving — but getting these four dials right means the difference between a cup that's muddy and bitter and one that's clean and bold.</p>
+    </div>
+    <div class="param-grid reveal">
+      <div class="param-card">
+        <div class="pk">Dose</div>
+        <div class="pv">30g</div>
+        <div class="pd">For a standard 450g brew (about 2 cups). Scale up by the same ratio — 60g for 900g water fills most 8-cup presses.</div>
+      </div>
+      <div class="param-card">
+        <div class="pk">Ratio 1:15</div>
+        <div class="pv">450g water</div>
+        <div class="pd">One gram of coffee per 15 grams of water. Slightly stronger than pour-over since the metal filter passes more body into the cup.</div>
+      </div>
+      <div class="param-card">
+        <div class="pk">Grind</div>
+        <div class="pv">Coarse</div>
+        <div class="pd">Like rough sea salt or cracked peppercorns. Too fine and the mesh won't filter it, leaving the cup muddy and bitter.</div>
+      </div>
+      <div class="param-card">
+        <div class="pk">Water temp</div>
+        <div class="pv">93–96°C</div>
+        <div class="pd">Just off the boil — about 30 seconds after the kettle clicks off. French press can handle higher temps than pour-over because the steep time compensates.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section section--alt" id="guide">
+  <div class="container">
+    <div class="sec-head reveal">
+      <span class="eyebrow">Brew guide · 4 minutes total</span>
+      <h2>A timeline, not a technique.</h2>
+      <p class="lede">French press is the most time-based brew method. The steps are simple — the clock is the only thing to watch.</p>
+    </div>
+    <div class="timeline reveal">
+
+      <div class="tl-row">
+        <div class="tl-dot"><i></i></div>
+        <div class="tl-body">
+          <div class="tl-time">0:00 — Start</div>
+          <h4>Heat water and preheat the press</h4>
+          <p>Bring water to 94°C (or let boiling water sit 30 seconds). Pour a small amount into the press to warm the glass, swirl, and discard. A cold press drops water temperature by 5–8°C immediately — preheating keeps the steep at the right temp throughout.</p>
+        </div>
+      </div>
+
+      <div class="tl-row">
+        <div class="tl-dot"><i></i></div>
+        <div class="tl-body">
+          <div class="tl-time">0:00 — Add coffee</div>
+          <h4>Grind coarse and dose</h4>
+          <p>Grind 30g of coffee to the coarseness of rough sea salt. Add it to the warmed press and shake gently to level the bed. Place the press on your scale and zero it.</p>
+          <div class="note">Grind right before brewing. Coarse grounds go stale faster than fine ones once exposed to air.</div>
+        </div>
+      </div>
+
+      <div class="tl-row">
+        <div class="tl-dot"><i></i></div>
+        <div class="tl-body">
+          <div class="tl-time">0:00 → 0:30 — Bloom</div>
+          <h4>Pour 60g of water and wait</h4>
+          <p>Start your timer. Pour just enough hot water to saturate the grounds — about double the coffee weight (60g). Stir gently with a spoon to make sure all the grounds are wet. Wait 30 seconds while the coffee blooms and off-gases CO₂.</p>
+        </div>
+      </div>
+
+      <div class="tl-row">
+        <div class="tl-dot"><i></i></div>
+        <div class="tl-body">
+          <div class="tl-time">0:30 — Fill</div>
+          <h4>Pour the remaining water</h4>
+          <p>Pour the rest of your water (to 450g total) in a slow, even spiral. Stir once more to ensure full saturation. Place the lid on the press with the plunger pulled all the way up — do not press yet.</p>
+        </div>
+      </div>
+
+      <div class="tl-row">
+        <div class="tl-dot"><i></i></div>
+        <div class="tl-body">
+          <div class="tl-time">0:30 → 4:00 — Steep</div>
+          <h4>Wait 3.5 minutes without disturbing</h4>
+          <p>Set a timer. Don't swirl, stir, or lift the lid. The grounds need an undisturbed immersion for full, even extraction. Use this time to warm your mugs with hot water.</p>
+          <div class="note">Steep time is your strength dial. 3.5–4 min = balanced. 5+ min = very bold and potentially bitter.</div>
+        </div>
+      </div>
+
+      <div class="tl-row">
+        <div class="tl-dot"><i></i></div>
+        <div class="tl-body">
+          <div class="tl-time">4:00 — Plunge</div>
+          <h4>Press slowly and steadily</h4>
+          <p>When the timer hits 4:00, press the plunger down with firm, even pressure. It should take about 20–30 seconds to reach the bottom. If it shoots down instantly, the grind is too coarse. If it's impossible to push, too fine.</p>
+        </div>
+      </div>
+
+      <div class="tl-row">
+        <div class="tl-dot done"><i></i></div>
+        <div class="tl-body">
+          <div class="tl-time">4:30 — Pour immediately</div>
+          <h4>Don't let it sit in the press</h4>
+          <p>Pour every drop into cups or a separate carafe right after plunging. Leaving brewed coffee sitting on the grounds — even with the plunger down — causes over-extraction and bitterness. The press is not a carafe.</p>
+          <div class="note">Pour it all out. If you're not drinking it immediately, transfer to a thermos.</div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<section class="section" id="tips">
+  <div class="container">
+    <div class="sec-head reveal">
+      <span class="eyebrow">Tips</span>
+      <h2>Fix the muddy cup. Keep the bold one.</h2>
+    </div>
+    <div class="tips-grid reveal">
+      <div class="tip-card">
+        <h4>Grind coarse — really coarse</h4>
+        <p>The most common French press mistake is grinding too fine. The metal mesh doesn't trap fines — they pass through and make the cup gritty and bitter. When in doubt, go one step coarser than you think you need.</p>
+      </div>
+      <div class="tip-card">
+        <h4>Skim the crust before plunging</h4>
+        <p>After the steep, a crust of grounds floats on top. Use a spoon to break it and skim off the foam and loose grounds before placing the lid. This removes some of the bitterness that concentrates at the surface.</p>
+      </div>
+      <div class="tip-card">
+        <h4>Don't plunge too fast</h4>
+        <p>Plunging quickly spikes pressure and forces fines through the mesh into the cup. Press slow and steady — 20 to 30 seconds, even pressure. If you feel significant resistance, stop rather than force it.</p>
+      </div>
+      <div class="tip-card">
+        <h4>Pour out everything</h4>
+        <p>The moment the plunge is done, pour the entire brew into cups or a carafe. Coffee left in contact with the grounds continues extracting and will be unpleasantly bitter within 5 minutes.</p>
+      </div>
+      <div class="tip-card">
+        <h4>Clean it properly</h4>
+        <p>Rinse the press immediately after use — wet grounds are easy to rinse out. Dried grounds require disassembly and scrubbing. The mesh plunger should be taken apart and rinsed separately weekly to prevent rancid oil buildup.</p>
+      </div>
+      <div class="tip-card">
+        <h4>Dial in with time, not grind</h4>
+        <p>Because coarse grinding is so important for clarity, use steep time as your primary strength adjustment. Prefer 3.5 minutes for a cleaner cup, 4.5 minutes for maximum body. Adjust grind only if time-changes aren't giving you what you want.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<footer class="footer">
+  <div class="container">
+    <div class="foot-grid">
+      <div class="foot-brand">
+        <a href="groundwork.html" class="brand">SIMPLGRINDS<span class="dot"></span></a>
+        <p>A brewing guide for every method. Built for the people who weigh their beans and time their pours.</p>
+      </div>
+      <div class="foot-col">
+        <h5>Methods</h5>
+        <a href="groundwork-brewlab.html">Pour-over Lab</a>
+        <a href="groundwork-espresso.html">Espresso</a>
+        <a href="groundwork-kcup.html">K-Cup</a>
+        <a href="groundwork-frenchpress.html">French Press</a>
+      </div>
+      <div class="foot-col">
+        <h5>Tools</h5>
+        <a href="groundwork-brewlab.html#grind">Grind guide</a>
+        <a href="groundwork-brewlab.html#tasting">Tasting wheel</a>
+        <a href="groundwork-brewlab.html#glossary">Glossary</a>
+        <a href="groundwork-brewlab.html#journal">Brew journal</a>
+      </div>
+    </div>
+    <div class="foot-bottom">
+      <p>SIMPLGRINDS · brewing guides for every method</p>
+      <p>Brew responsibly. Stay caffeinated.</p>
+    </div>
+  </div>
+</footer>
+
+<script>
+"use strict";
+(function(){
+  const $ = s => document.querySelector(s);
+  const $$ = s => Array.from(document.querySelectorAll(s));
+  const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const nav = $('#nav'), toggle = $('#navToggle');
+  toggle.addEventListener('click', () => {
+    const open = nav.classList.toggle('open');
+    toggle.setAttribute('aria-expanded', open ? 'true' : 'false');
+  });
+  $$('.nav-links a').forEach(a => a.addEventListener('click', () => {
+    nav.classList.remove('open');
+    toggle.setAttribute('aria-expanded', 'false');
+  }));
+  if (!reduceMotion) {
+    const obs = new IntersectionObserver((entries, o) => {
+      entries.forEach(en => { if (en.isIntersecting) { en.target.classList.add('in'); o.unobserve(en.target); } });
+    }, { rootMargin: '0px 0px -10% 0px', threshold: 0.08 });
+    $$('.reveal').forEach(el => obs.observe(el));
+  } else {
+    $$('.reveal').forEach(el => el.classList.add('in'));
+  }
+})();
+</script>
+</body>
+</html>

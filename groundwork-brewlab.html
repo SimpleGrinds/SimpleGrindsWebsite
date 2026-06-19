@@ -1,0 +1,1254 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Brew Lab — SIMPLGRINDS</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#EFEEE9;--bg-2:#E7E5DE;--surface:#FAF9F6;--ink:#1A1714;--ink-soft:#463F38;
+  --muted:#7C7268;--line:rgba(26,23,20,0.12);--line-soft:rgba(26,23,20,0.07);
+  --accent:#A8551F;--accent-2:#C98A3C;--good:#5C6E3A;
+  --dark:#16130F;--dark-2:#1E1A15;--dark-3:#272118;
+  --dark-line:rgba(237,231,221,0.13);--on-dark:#ECE6DC;
+  --on-dark-soft:#C7BDB0;--on-dark-muted:#8C8275;
+  --r:10px;--container:1180px;--ease:cubic-bezier(.22,.61,.36,1);
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:"IBM Plex Sans",system-ui,-apple-system,sans-serif;font-size:17px;line-height:1.65;-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility;overflow-x:hidden}
+h1,h2,h3,h4{font-family:"Space Grotesk",system-ui,sans-serif;font-weight:600;letter-spacing:-0.02em;line-height:1.05;margin:0}
+p{margin:0}
+a{color:inherit;text-decoration:none}
+button{font-family:inherit;cursor:pointer;border:none;background:none;color:inherit}
+::selection{background:var(--accent);color:#fff}
+:focus-visible{outline:2px solid var(--accent);outline-offset:3px;border-radius:4px}
+
+.container{max-width:var(--container);margin:0 auto;padding:0 28px}
+.section{padding:clamp(72px,10vw,132px) 0;position:relative}
+.section--alt{background:var(--bg-2)}
+.eyebrow{font-family:"IBM Plex Mono",monospace;font-size:.72rem;font-weight:500;text-transform:uppercase;letter-spacing:.2em;color:var(--muted);display:inline-flex;align-items:center;gap:.6em}
+.eyebrow::before{content:"";width:18px;height:1px;background:var(--accent);display:inline-block}
+.eyebrow--dark{color:var(--on-dark-muted)}
+.eyebrow--dark::before{background:var(--accent-2)}
+.sec-head{max-width:680px;margin-bottom:clamp(36px,5vw,64px)}
+.sec-head h2{font-size:clamp(1.9rem,4.4vw,3.1rem);margin:18px 0 0}
+.sec-head .lede{margin-top:18px;color:var(--ink-soft);font-size:1.06rem;max-width:60ch}
+.muted{color:var(--muted)}
+.mono{font-family:"IBM Plex Mono",monospace}
+
+.reveal{opacity:0;transform:translateY(22px);transition:opacity .7s var(--ease),transform .7s var(--ease)}
+.reveal.in{opacity:1;transform:none}
+
+/* NAV */
+.nav{position:sticky;top:0;z-index:60;background:rgba(239,238,233,.82);backdrop-filter:blur(14px);border-bottom:1px solid var(--line)}
+.nav-inner{max-width:var(--container);margin:0 auto;padding:0 28px;height:64px;display:flex;align-items:center;justify-content:space-between;gap:24px}
+.brand{display:flex;align-items:baseline;gap:.5ch;font-family:"Space Grotesk",sans-serif;font-weight:700;font-size:1.18rem;letter-spacing:.02em}
+.brand .dot{width:7px;height:7px;border-radius:50%;background:var(--accent);display:inline-block;transform:translateY(-1px)}
+.brand small{font-family:"IBM Plex Mono",monospace;font-weight:400;font-size:.62rem;letter-spacing:.16em;color:var(--muted);text-transform:uppercase;margin-left:.4ch}
+.nav-links{display:flex;align-items:center;gap:4px}
+.nav-links a{font-family:"IBM Plex Mono",monospace;font-size:.78rem;letter-spacing:.04em;padding:8px 12px;border-radius:7px;color:var(--ink-soft);transition:background .2s,color .2s}
+.nav-links a:hover{background:var(--line-soft);color:var(--ink)}
+.nav-links a.active{color:var(--accent)}
+.nav-cta{font-family:"IBM Plex Mono",monospace;font-size:.76rem;letter-spacing:.05em;padding:9px 16px;border:1px solid var(--ink);border-radius:8px;background:var(--ink);color:var(--bg);transition:transform .15s,opacity .2s}
+.nav-cta:hover{transform:translateY(-1px);opacity:.9}
+.nav-toggle{display:none;width:42px;height:42px;border:1px solid var(--line);border-radius:9px;align-items:center;justify-content:center}
+.nav-toggle span,.nav-toggle span::before,.nav-toggle span::after{content:"";display:block;width:18px;height:1.6px;background:var(--ink);position:relative;transition:transform .25s}
+.nav-toggle span::before{position:absolute;top:-6px}
+.nav-toggle span::after{position:absolute;top:6px}
+.nav.open .nav-toggle span{background:transparent}
+.nav.open .nav-toggle span::before{transform:translateY(6px) rotate(45deg)}
+.nav.open .nav-toggle span::after{transform:translateY(-6px) rotate(-45deg)}
+
+/* HERO */
+.hero{padding:clamp(64px,12vw,150px) 0 clamp(56px,8vw,96px);position:relative;overflow:hidden}
+.hero-grid{display:grid;grid-template-columns:1.15fr .85fr;gap:56px;align-items:center}
+.hero h1{font-size:clamp(2.7rem,7.4vw,5.6rem);font-weight:600;letter-spacing:-0.035em}
+.hero h1 em{font-style:normal;color:var(--accent)}
+.hero .sub{margin-top:26px;font-size:clamp(1.05rem,1.6vw,1.25rem);color:var(--ink-soft);max-width:46ch}
+.hero-meta{margin-top:34px;display:flex;flex-wrap:wrap;gap:10px}
+.hero-meta a{font-family:"IBM Plex Mono",monospace;font-size:.8rem;letter-spacing:.04em;padding:11px 18px;border-radius:9px;border:1px solid var(--ink);transition:transform .15s,background .2s,color .2s}
+.hero-meta a.primary{background:var(--ink);color:var(--bg)}
+.hero-meta a.primary:hover{transform:translateY(-2px)}
+.hero-meta a.ghost:hover{background:var(--ink);color:var(--bg)}
+.hero-stats{margin-top:42px;display:flex;gap:40px;flex-wrap:wrap}
+.hero-stats .st{display:flex;flex-direction:column;gap:2px}
+.hero-stats .st b{font-family:"Space Grotesk",sans-serif;font-size:1.7rem;font-weight:600}
+.hero-stats .st span{font-family:"IBM Plex Mono",monospace;font-size:.68rem;letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
+
+.spec-card{background:var(--dark);color:var(--on-dark);border-radius:16px;padding:26px;box-shadow:0 30px 60px -30px rgba(26,23,20,.55);border:1px solid var(--dark-line);position:relative;overflow:hidden}
+.spec-card::before{content:"";position:absolute;inset:0;background:radial-gradient(120% 80% at 80% 0%,rgba(201,138,60,.16),transparent 60%);pointer-events:none}
+.spec-top{display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid var(--dark-line);padding-bottom:16px;margin-bottom:18px}
+.spec-top .label{font-family:"IBM Plex Mono",monospace;font-size:.66rem;letter-spacing:.18em;text-transform:uppercase;color:var(--on-dark-muted)}
+.spec-top .live{display:flex;align-items:center;gap:7px;font-family:"IBM Plex Mono",monospace;font-size:.66rem;letter-spacing:.1em;color:var(--on-dark-soft)}
+.spec-top .live i{width:7px;height:7px;border-radius:50%;background:var(--accent-2);display:inline-block;animation:blink 1.6s steps(1) infinite}
+@keyframes blink{50%{opacity:.25}}
+.spec-name{font-family:"Space Grotesk",sans-serif;font-size:1.4rem;font-weight:600;margin-bottom:4px}
+.spec-blurb{font-size:.9rem;color:var(--on-dark-soft);min-height:2.6em;margin-bottom:20px}
+.spec-rows{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.spec-rows .cell{background:var(--dark-2);border:1px solid var(--dark-line);border-radius:10px;padding:12px 14px}
+.spec-rows .cell .k{font-family:"IBM Plex Mono",monospace;font-size:.6rem;letter-spacing:.14em;text-transform:uppercase;color:var(--on-dark-muted)}
+.spec-rows .cell .v{font-family:"IBM Plex Mono",monospace;font-size:1.15rem;font-weight:500;color:var(--on-dark);margin-top:3px}
+.spec-rows .cell .v b{color:var(--accent-2);font-weight:600}
+
+.pill-row{display:flex;flex-wrap:wrap;gap:8px}
+.pill{font-family:"IBM Plex Mono",monospace;font-size:.78rem;letter-spacing:.03em;padding:9px 14px;border-radius:999px;border:1px solid var(--line);background:var(--surface);color:var(--ink-soft);transition:all .18s var(--ease)}
+.pill:hover{border-color:var(--ink);color:var(--ink)}
+.pill.on{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+
+/* LAB */
+.lab{background:var(--dark);color:var(--on-dark);position:relative}
+.lab::before{content:"";position:absolute;inset:0;background:radial-gradient(90% 60% at 12% -5%,rgba(168,85,31,.14),transparent 55%);pointer-events:none}
+.lab .container{position:relative}
+.lab-head{max-width:720px}
+.lab-head h2{color:var(--on-dark);font-size:clamp(2rem,4.6vw,3.3rem);margin-top:18px}
+.lab-head .lede{color:var(--on-dark-soft);margin-top:18px;font-size:1.06rem}
+.console{margin-top:clamp(36px,5vw,56px)}
+
+.readouts{display:grid;grid-template-columns:1.5fr 1fr 1fr 1fr;gap:14px;margin-bottom:26px}
+.rd{background:var(--dark-2);border:1px solid var(--dark-line);border-radius:12px;padding:16px 18px;position:relative;overflow:hidden}
+.rd .k{font-family:"IBM Plex Mono",monospace;font-size:.62rem;letter-spacing:.16em;text-transform:uppercase;color:var(--on-dark-muted)}
+.rd .v{font-family:"IBM Plex Mono",monospace;font-weight:600;font-size:clamp(1.3rem,2.4vw,1.7rem);margin-top:6px;color:var(--on-dark);line-height:1.1}
+.rd .v small{font-size:.62em;font-weight:400;color:var(--on-dark-muted);margin-left:.4ch}
+.rd-pulse{animation:rdPulse .55s var(--ease)}
+@keyframes rdPulse{0%{color:var(--accent-2);text-shadow:0 0 14px rgba(201,138,60,.5)}100%{color:var(--on-dark)}}
+.grind-scale{margin-top:14px;position:relative;height:30px}
+.grind-track{position:absolute;top:9px;left:0;right:0;height:4px;border-radius:4px;background:linear-gradient(90deg,#3a3128,#5a4c3b)}
+.grind-ticks{position:absolute;top:5px;left:0;right:0;display:flex;justify-content:space-between}
+.grind-ticks i{width:1px;height:12px;background:var(--dark-line)}
+.grind-marker{position:absolute;top:2px;width:14px;height:14px;border-radius:50%;background:var(--accent-2);border:2px solid var(--dark);transform:translateX(-50%);transition:left .4s var(--ease);box-shadow:0 0 0 3px rgba(201,138,60,.18)}
+.grind-labels{display:flex;justify-content:space-between;margin-top:2px;font-family:"IBM Plex Mono",monospace;font-size:.56rem;letter-spacing:.06em;color:var(--on-dark-muted)}
+
+.console-grid{display:grid;grid-template-columns:1.2fr 1fr;gap:20px}
+.panel{background:var(--dark-2);border:1px solid var(--dark-line);border-radius:14px;padding:22px}
+.panel+.panel{margin-top:18px}
+.panel-title{font-family:"IBM Plex Mono",monospace;font-size:.66rem;letter-spacing:.16em;text-transform:uppercase;color:var(--on-dark-muted);margin-bottom:16px;display:flex;justify-content:space-between;align-items:center}
+.panel-title .hint{text-transform:none;letter-spacing:0;color:var(--on-dark-muted);font-size:.7rem}
+
+.method-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.method-btn{text-align:left;padding:13px 15px;border-radius:11px;border:1px solid var(--dark-line);background:var(--dark-3);transition:all .18s var(--ease)}
+.method-btn:hover{border-color:var(--on-dark-muted)}
+.method-btn.on{border-color:var(--accent-2);background:#2f2619;box-shadow:inset 0 0 0 1px var(--accent-2)}
+.method-btn .mn{font-family:"Space Grotesk",sans-serif;font-weight:600;font-size:1rem;color:var(--on-dark)}
+.method-btn .md{font-family:"IBM Plex Mono",monospace;font-size:.64rem;letter-spacing:.08em;color:var(--on-dark-muted);margin-top:3px;text-transform:uppercase}
+
+.stepper-row{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:14px}
+.stepper{background:var(--dark-3);border:1px solid var(--dark-line);border-radius:11px;padding:11px 13px}
+.stepper .sk{font-family:"IBM Plex Mono",monospace;font-size:.6rem;letter-spacing:.14em;text-transform:uppercase;color:var(--on-dark-muted)}
+.stepper .sctrl{display:flex;align-items:center;justify-content:space-between;margin-top:7px}
+.stepper .sval{font-family:"IBM Plex Mono",monospace;font-weight:600;font-size:1.25rem;color:var(--on-dark)}
+.bump{width:30px;height:30px;border-radius:8px;border:1px solid var(--dark-line);background:var(--dark-2);color:var(--on-dark);font-size:1.2rem;line-height:1;display:flex;align-items:center;justify-content:center;transition:all .15s}
+.bump:hover{border-color:var(--accent-2);color:var(--accent-2)}
+.bump:active{transform:scale(.92)}
+.water-out{font-family:"IBM Plex Mono",monospace;font-size:.82rem;color:var(--on-dark-soft);display:flex;justify-content:space-between;align-items:center;padding-top:4px}
+.water-out b{color:var(--accent-2)}
+.cups{display:flex;gap:7px;margin-top:12px;align-items:center}
+.cups .cl{font-family:"IBM Plex Mono",monospace;font-size:.6rem;letter-spacing:.12em;text-transform:uppercase;color:var(--on-dark-muted);margin-right:4px}
+.chip{font-family:"IBM Plex Mono",monospace;font-size:.74rem;width:34px;height:34px;border-radius:9px;border:1px solid var(--dark-line);background:var(--dark-3);color:var(--on-dark-soft);transition:all .15s}
+.chip:hover{border-color:var(--accent-2);color:var(--accent-2)}
+
+.dial{margin-bottom:18px}
+.dial:last-child{margin-bottom:0}
+.dial-label{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:10px}
+.dial-label .dl{font-family:"IBM Plex Mono",monospace;font-size:.66rem;letter-spacing:.14em;text-transform:uppercase;color:var(--on-dark-soft)}
+.dial-label .dv{font-family:"IBM Plex Mono",monospace;font-size:.72rem;color:var(--accent-2)}
+.bitter-ctrl{display:flex;align-items:center;gap:12px}
+.bitter-ctrl .ends{font-family:"IBM Plex Mono",monospace;font-size:.64rem;color:var(--on-dark-muted);white-space:nowrap}
+.notches{flex:1;display:flex;gap:6px}
+.notch{flex:1;height:36px;border-radius:8px;border:1px solid var(--dark-line);background:var(--dark-3);transition:all .18s var(--ease);position:relative}
+.notch:hover{border-color:var(--on-dark-muted)}
+.notch.on{background:linear-gradient(180deg,var(--accent),#8a4419);border-color:var(--accent)}
+.notch.on::after{content:"";position:absolute;inset:0;border-radius:7px;box-shadow:0 0 16px rgba(168,85,31,.5)}
+.flavor-grid{display:grid;grid-template-columns:1fr 1fr;gap:9px}
+.flavor-btn{text-align:left;padding:11px 13px;border-radius:10px;border:1px solid var(--dark-line);background:var(--dark-3);transition:all .18s var(--ease)}
+.flavor-btn:hover{border-color:var(--on-dark-muted)}
+.flavor-btn.on{border-color:var(--accent-2);background:#2f2619}
+.flavor-btn .fn{font-weight:600;font-size:.92rem;color:var(--on-dark)}
+.flavor-btn .fd{font-family:"IBM Plex Mono",monospace;font-size:.58rem;letter-spacing:.04em;color:var(--on-dark-muted);margin-top:4px;line-height:1.4}
+.notes-line{margin-top:14px;font-family:"IBM Plex Mono",monospace;font-size:.72rem;color:var(--on-dark-soft);border-top:1px dashed var(--dark-line);padding-top:12px}
+.notes-line b{color:var(--accent-2)}
+
+.timer-wrap{display:flex;flex-direction:column;align-items:center;text-align:center}
+.ring-wrap{position:relative;width:236px;height:236px}
+.ring-wrap svg{transform:rotate(-90deg)}
+.ring-bg{fill:none;stroke:var(--dark-3);stroke-width:10}
+.ring-fg{fill:none;stroke:var(--accent-2);stroke-width:10;stroke-linecap:round;transition:stroke-dashoffset .25s linear}
+.ring-center{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center}
+.ring-center .big{font-family:"IBM Plex Mono",monospace;font-weight:600;font-size:2.6rem;letter-spacing:-.02em;line-height:1}
+.ring-center .small{font-family:"IBM Plex Mono",monospace;font-size:.62rem;letter-spacing:.18em;text-transform:uppercase;color:var(--on-dark-muted);margin-top:7px}
+.now{margin-top:22px;min-height:96px;width:100%}
+.now .phase{font-family:"Space Grotesk",sans-serif;font-weight:600;font-size:1.3rem;color:var(--accent-2)}
+.now .inst{font-size:.92rem;color:var(--on-dark-soft);margin-top:6px;line-height:1.45}
+.now .next{font-family:"IBM Plex Mono",monospace;font-size:.68rem;letter-spacing:.06em;color:var(--on-dark-muted);margin-top:9px}
+.timer-btns{display:flex;gap:10px;margin-top:20px;width:100%}
+.tbtn{flex:1;padding:13px;border-radius:11px;font-family:"IBM Plex Mono",monospace;font-size:.78rem;letter-spacing:.06em;text-transform:uppercase;transition:all .15s;border:1px solid var(--dark-line);background:var(--dark-3);color:var(--on-dark)}
+.tbtn:hover{border-color:var(--on-dark-muted)}
+.tbtn.primary{background:var(--accent-2);color:#1a1208;border-color:var(--accent-2);font-weight:600}
+.tbtn.primary:hover{filter:brightness(1.08)}
+.sound-toggle{margin-top:14px;display:flex;align-items:center;justify-content:center;gap:8px;font-family:"IBM Plex Mono",monospace;font-size:.68rem;letter-spacing:.08em;color:var(--on-dark-muted)}
+.sound-toggle button{width:40px;height:22px;border-radius:999px;background:var(--dark-3);border:1px solid var(--dark-line);position:relative;transition:background .2s}
+.sound-toggle button i{position:absolute;top:2px;left:2px;width:16px;height:16px;border-radius:50%;background:var(--on-dark-muted);transition:all .2s}
+.sound-toggle button.on{background:var(--accent-2)}
+.sound-toggle button.on i{left:20px;background:#1a1208}
+
+.steps{margin-top:20px;background:var(--dark-2);border:1px solid var(--dark-line);border-radius:14px;padding:8px}
+.step{display:grid;grid-template-columns:auto 1fr auto;gap:16px;align-items:center;padding:16px 16px;border-radius:11px;transition:background .2s,box-shadow .2s;border:1px solid transparent}
+.step+.step{border-top:1px solid var(--dark-line);border-radius:0}
+.step.current{background:#2a2218;border:1px solid var(--accent-2);border-radius:11px;box-shadow:0 0 24px -6px rgba(201,138,60,.4)}
+.step.current+.step{border-top:1px solid transparent}
+.step-idx{font-family:"IBM Plex Mono",monospace;font-size:.8rem;color:var(--on-dark-muted);width:22px}
+.step.current .step-idx{color:var(--accent-2)}
+.step-main .st{font-family:"Space Grotesk",sans-serif;font-weight:600;font-size:1.02rem;color:var(--on-dark)}
+.step-main .sn{font-size:.85rem;color:var(--on-dark-soft);margin-top:3px}
+.step-meta{display:flex;flex-direction:column;align-items:flex-end;gap:3px;font-family:"IBM Plex Mono",monospace}
+.step-meta .tg{font-size:.92rem;color:var(--accent-2);font-weight:500}
+.step-meta .dur{font-size:.68rem;color:var(--on-dark-muted)}
+.step-check{width:26px;height:26px;border-radius:8px;border:1.6px solid var(--on-dark-muted);background:transparent;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:all .18s}
+.step-check:hover{border-color:var(--accent-2)}
+.step-check.done{background:var(--accent-2);border-color:var(--accent-2)}
+.step-check svg{opacity:0;transition:opacity .15s;width:14px;height:14px}
+.step-check.done svg{opacity:1}
+.step.done-row .step-main .st{color:var(--on-dark-muted);text-decoration:line-through;text-decoration-color:var(--on-dark-muted)}
+
+.card-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:18px}
+.mcard{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:24px;transition:transform .25s var(--ease),box-shadow .25s var(--ease),border-color .2s}
+.mcard:hover{transform:translateY(-4px);box-shadow:0 24px 44px -28px rgba(26,23,20,.4);border-color:var(--ink)}
+.mcard .top{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:14px}
+.mcard h3{font-size:1.35rem}
+.mcard .tag{font-family:"IBM Plex Mono",monospace;font-size:.6rem;letter-spacing:.1em;text-transform:uppercase;padding:5px 9px;border-radius:999px;border:1px solid var(--line);color:var(--muted)}
+.mcard .tag.imm{color:var(--accent);border-color:rgba(168,85,31,.4)}
+.mcard .tag.perc{color:var(--good);border-color:rgba(92,110,58,.4)}
+.mcard p{font-size:.92rem;color:var(--ink-soft);margin-bottom:18px}
+.mcard .specs{display:grid;grid-template-columns:1fr 1fr;gap:10px;border-top:1px solid var(--line);padding-top:16px}
+.mcard .specs .sp{display:flex;flex-direction:column}
+.mcard .specs .sp .k{font-family:"IBM Plex Mono",monospace;font-size:.58rem;letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
+.mcard .specs .sp .v{font-family:"IBM Plex Mono",monospace;font-size:.92rem;font-weight:500;margin-top:2px}
+
+.filter-row{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:28px;align-items:center}
+.filter-row .fl{font-family:"IBM Plex Mono",monospace;font-size:.64rem;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);margin-right:6px}
+.origin-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:16px}
+.ocard{background:var(--surface);border:1px solid var(--line);border-radius:13px;padding:22px;transition:transform .35s var(--ease),opacity .35s var(--ease),box-shadow .25s}
+.ocard:hover{box-shadow:0 20px 40px -28px rgba(26,23,20,.35)}
+.ocard.hide{display:none}
+.ocard .oh{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:4px}
+.ocard h3{font-size:1.2rem}
+.ocard .reg{font-family:"IBM Plex Mono",monospace;font-size:.62rem;letter-spacing:.1em;text-transform:uppercase;color:var(--accent)}
+.ocard .notes{font-size:.92rem;color:var(--ink-soft);margin:10px 0 16px}
+.ocard .meta{display:flex;flex-direction:column;gap:7px;border-top:1px solid var(--line);padding-top:14px}
+.ocard .meta .mrow{display:flex;justify-content:space-between;font-family:"IBM Plex Mono",monospace;font-size:.74rem}
+.ocard .meta .mrow span:first-child{color:var(--muted)}
+.flavor-dots{margin-top:14px;display:flex;gap:6px;flex-wrap:wrap}
+.fdot{font-family:"IBM Plex Mono",monospace;font-size:.62rem;padding:3px 9px;border-radius:999px;background:var(--bg-2);color:var(--ink-soft)}
+
+.grind-guide{background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:clamp(24px,4vw,44px)}
+.gg-bar{position:relative;height:14px;border-radius:999px;background:linear-gradient(90deg,#2a2520,#6b5d4d,#b5a48c,#e3d8c4);margin:48px 0 8px}
+.gg-marks{position:relative;height:130px;margin-top:14px}
+.gg-mark{position:absolute;top:0;transform:translateX(-50%);text-align:center;width:96px}
+.gg-mark .ln{width:1px;height:18px;background:var(--line);margin:0 auto 8px}
+.gg-mark .gm{font-family:"Space Grotesk",sans-serif;font-weight:600;font-size:.92rem}
+.gg-mark .gs{font-family:"IBM Plex Mono",monospace;font-size:.58rem;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin-top:3px}
+.gg-ends{display:flex;justify-content:space-between;font-family:"IBM Plex Mono",monospace;font-size:.66rem;letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
+
+.taste-grid{display:grid;grid-template-columns:1.1fr 1fr;gap:32px;align-items:start}
+.taste-fams{display:flex;flex-wrap:wrap;gap:9px}
+.fam{padding:11px 16px;border-radius:999px;border:1px solid var(--line);background:var(--surface);font-family:"IBM Plex Mono",monospace;font-size:.82rem;transition:all .18s var(--ease)}
+.fam:hover{border-color:var(--ink)}
+.fam.on{background:var(--accent);color:#fff;border-color:var(--accent)}
+.taste-out{background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:30px;min-height:300px}
+.taste-out h3{font-size:1.6rem;color:var(--accent)}
+.taste-out .desc{margin:12px 0 22px;color:var(--ink-soft);font-size:.96rem}
+.note-cloud{display:flex;flex-wrap:wrap;gap:8px}
+.note-cloud span{font-family:"IBM Plex Mono",monospace;font-size:.8rem;padding:7px 13px;border-radius:8px;background:var(--bg-2);border:1px solid var(--line-soft)}
+
+.glo-search{position:relative;max-width:420px;margin-bottom:30px}
+.glo-search input{width:100%;padding:14px 16px 14px 44px;border-radius:11px;border:1px solid var(--line);background:var(--surface);font-family:"IBM Plex Mono",monospace;font-size:.9rem;color:var(--ink)}
+.glo-search input::placeholder{color:var(--muted)}
+.glo-search svg{position:absolute;left:15px;top:50%;transform:translateY(-50%);opacity:.5}
+.glo-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:2px;background:var(--line-soft);border:1px solid var(--line);border-radius:14px;overflow:hidden}
+.gterm{background:var(--surface);padding:22px}
+.gterm.hide{display:none}
+.gterm dt{font-family:"Space Grotesk",sans-serif;font-weight:600;font-size:1.05rem;display:flex;align-items:center;gap:10px}
+.gterm dt .ph{font-family:"IBM Plex Mono",monospace;font-size:.62rem;color:var(--accent);font-weight:400}
+.gterm dd{margin:8px 0 0;font-size:.9rem;color:var(--ink-soft);line-height:1.55}
+.glo-empty{padding:40px;text-align:center;color:var(--muted);font-family:"IBM Plex Mono",monospace;font-size:.85rem;display:none}
+
+.journal-grid{display:grid;grid-template-columns:380px 1fr;gap:32px;align-items:start}
+.jform{background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:26px;position:sticky;top:84px}
+.jform h3{font-size:1.3rem;margin-bottom:6px}
+.jform .fhint{font-size:.86rem;color:var(--muted);margin-bottom:20px}
+.field{margin-bottom:14px}
+.field label{display:block;font-family:"IBM Plex Mono",monospace;font-size:.62rem;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);margin-bottom:6px}
+.field input,.field select,.field textarea{width:100%;padding:11px 13px;border-radius:9px;border:1px solid var(--line);background:var(--bg);font-family:"IBM Plex Sans",sans-serif;font-size:.92rem;color:var(--ink)}
+.field textarea{font-family:"IBM Plex Sans",sans-serif;resize:vertical;min-height:64px}
+.field-row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.rate{display:flex;gap:6px}
+.rate button{width:38px;height:38px;border-radius:9px;border:1px solid var(--line);background:var(--bg);font-family:"IBM Plex Mono",monospace;font-weight:600;transition:all .15s}
+.rate button.on{background:var(--accent);color:#fff;border-color:var(--accent)}
+.jsubmit{width:100%;margin-top:8px;padding:14px;border-radius:11px;background:var(--ink);color:var(--bg);font-family:"IBM Plex Mono",monospace;font-size:.82rem;letter-spacing:.06em;text-transform:uppercase;transition:transform .15s,opacity .2s}
+.jsubmit:hover{transform:translateY(-2px)}
+.jstats{display:flex;gap:24px;margin-bottom:20px;flex-wrap:wrap}
+.jstat{display:flex;flex-direction:column}
+.jstat b{font-family:"Space Grotesk",sans-serif;font-size:1.7rem;font-weight:600}
+.jstat span{font-family:"IBM Plex Mono",monospace;font-size:.62rem;letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
+.jlist{display:flex;flex-direction:column;gap:12px}
+.jempty{background:var(--surface);border:1px dashed var(--line);border-radius:14px;padding:48px 30px;text-align:center;color:var(--muted)}
+.jempty .ji{font-size:2rem;margin-bottom:10px}
+.jentry{background:var(--surface);border:1px solid var(--line);border-radius:13px;padding:20px;animation:slideIn .35s var(--ease)}
+@keyframes slideIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+.jentry .jtop{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;margin-bottom:10px}
+.jentry h4{font-family:"Space Grotesk",sans-serif;font-weight:600;font-size:1.12rem}
+.jentry .jdate{font-family:"IBM Plex Mono",monospace;font-size:.64rem;color:var(--muted);margin-top:2px}
+.jentry .jscore{font-family:"IBM Plex Mono",monospace;font-weight:600;color:var(--accent);font-size:.92rem;white-space:nowrap}
+.jentry .jspecs{display:flex;flex-wrap:wrap;gap:6px;margin:10px 0}
+.jentry .jspecs span{font-family:"IBM Plex Mono",monospace;font-size:.66rem;padding:4px 9px;border-radius:6px;background:var(--bg-2);color:var(--ink-soft)}
+.jentry .jnotes{font-size:.88rem;color:var(--ink-soft);font-style:italic}
+.jentry .jdel{margin-top:12px;font-family:"IBM Plex Mono",monospace;font-size:.66rem;color:var(--muted);text-transform:uppercase;letter-spacing:.08em;transition:color .15s}
+.jentry .jdel:hover{color:var(--accent)}
+
+.footer{background:var(--dark);color:var(--on-dark);padding:64px 0 40px}
+.foot-grid{display:grid;grid-template-columns:1.4fr 1fr 1fr;gap:40px;padding-bottom:40px;border-bottom:1px solid var(--dark-line)}
+.foot-brand .brand{color:var(--on-dark)}
+.foot-brand p{color:var(--on-dark-soft);font-size:.9rem;margin-top:14px;max-width:36ch}
+.foot-col h5{font-family:"IBM Plex Mono",monospace;font-size:.64rem;letter-spacing:.16em;text-transform:uppercase;color:var(--on-dark-muted);margin:0 0 14px;font-weight:500}
+.foot-col a{display:block;color:var(--on-dark-soft);font-size:.9rem;padding:5px 0;transition:color .15s}
+.foot-col a:hover{color:var(--accent-2)}
+.foot-bottom{display:flex;justify-content:space-between;align-items:center;padding-top:24px;flex-wrap:wrap;gap:12px}
+.foot-bottom p{font-family:"IBM Plex Mono",monospace;font-size:.68rem;color:var(--on-dark-muted);letter-spacing:.04em}
+
+@media(max-width:980px){
+  .hero-grid{grid-template-columns:1fr;gap:40px}
+  .spec-card{max-width:480px}
+  .console-grid{grid-template-columns:1fr}
+  .readouts{grid-template-columns:1fr 1fr}
+  .rd:first-child{grid-column:1 / -1}
+  .taste-grid{grid-template-columns:1fr;gap:24px}
+  .journal-grid{grid-template-columns:1fr}
+  .jform{position:static}
+  .foot-grid{grid-template-columns:1fr 1fr}
+}
+@media(max-width:760px){
+  body{font-size:16px}
+  .nav-links,.nav-cta{display:none}
+  .nav-toggle{display:flex}
+  .nav.open .nav-links{display:flex;flex-direction:column;position:absolute;top:64px;left:0;right:0;background:var(--bg);border-bottom:1px solid var(--line);padding:14px 28px;gap:2px}
+  .nav.open .nav-links a{padding:13px 8px;font-size:.9rem}
+  .nav.open .nav-cta{display:block;margin-top:8px;text-align:center}
+  .stepper-row{grid-template-columns:1fr}
+  .method-grid{grid-template-columns:1fr}
+  .flavor-grid{grid-template-columns:1fr}
+  .gg-marks{height:240px}
+  .foot-grid{grid-template-columns:1fr}
+  .field-row{grid-template-columns:1fr}
+}
+@media(max-width:480px){
+  .readouts{grid-template-columns:1fr}
+  .rd:first-child{grid-column:auto}
+  .hero-stats{gap:24px}
+}
+@media(prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation:none!important;transition:none!important;scroll-behavior:auto!important}
+  .reveal{opacity:1;transform:none}
+}
+</style>
+</head>
+<body>
+
+<header class="nav" id="nav">
+  <div class="nav-inner">
+    <a href="groundwork.html" class="brand">SIMPLGRINDS<span class="dot"></span><small>FILTER&nbsp;CO.</small></a>
+    <nav class="nav-links" aria-label="Primary">
+      <a href="groundwork.html">Home</a>
+      <a href="#lab" class="active">Brew Lab</a>
+      <a href="#methods">Methods</a>
+      <a href="#beans">Beans</a>
+      <a href="#grind">Grind</a>
+      <a href="#tasting">Tasting</a>
+      <a href="#journal">Journal</a>
+    </nav>
+    <a href="#lab" class="nav-cta">Open the lab</a>
+    <button class="nav-toggle" id="navToggle" aria-label="Toggle menu" aria-expanded="false"><span></span></button>
+  </div>
+</header>
+
+<main>
+
+<section class="hero" id="top">
+  <div class="container">
+    <div class="hero-grid">
+      <div class="reveal">
+        <span class="eyebrow">Pour-over, by the numbers</span>
+        <h1>Brew coffee like you <em>mean</em> it.</h1>
+        <p class="sub">A precise, hands-on guide to filter coffee. Pick a brewer, dial in the cup you want, and follow a live recipe with timing, grind, and water mapped to the gram.</p>
+        <div class="hero-meta">
+          <a href="#lab" class="primary">Start brewing →</a>
+          <a href="#methods" class="ghost">Compare methods</a>
+        </div>
+        <div class="hero-stats">
+          <div class="st"><b>4</b><span>Brewers tuned</span></div>
+          <div class="st"><b>5</b><span>Bitterness steps</span></div>
+          <div class="st"><b>0.1g</b><span>Recipe resolution</span></div>
+        </div>
+      </div>
+      <div class="reveal">
+        <div class="spec-card" id="specCard" aria-hidden="true">
+          <div class="spec-top">
+            <span class="label">Live recipe · auto</span>
+            <span class="live"><i></i> dialing in</span>
+          </div>
+          <div class="spec-name" id="specName">Hario V60</div>
+          <div class="spec-blurb" id="specBlurb">Fast, clean, and bright — the cone rewards an even, central pour.</div>
+          <div class="spec-rows">
+            <div class="cell"><div class="k">Dose → Water</div><div class="v" id="specDose"><b>20g</b> → 320g</div></div>
+            <div class="cell"><div class="k">Grind</div><div class="v" id="specGrind">Medium-fine</div></div>
+            <div class="cell"><div class="k">Water temp</div><div class="v" id="specTemp">94°C</div></div>
+            <div class="cell"><div class="k">Total time</div><div class="v" id="specTime">2:45</div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="lab section" id="lab">
+  <div class="container">
+    <div class="lab-head reveal">
+      <span class="eyebrow eyebrow--dark">The brew lab</span>
+      <h2>Tune the cup. The recipe follows.</h2>
+      <p class="lede">Tell it how you take your coffee — brighter or bolder, more bitter or less, and the flavour you're chasing. The grind, water temperature, and every pour time retune themselves around your choice. Then hit start and brew along.</p>
+    </div>
+
+    <div class="console reveal">
+      <div class="readouts">
+        <div class="rd">
+          <div class="k">Grind setting</div>
+          <div class="v" id="rdGrind">Medium-fine</div>
+          <div class="grind-scale">
+            <div class="grind-track"></div>
+            <div class="grind-ticks"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
+            <div class="grind-marker" id="grindMarker" style="left:46%"></div>
+          </div>
+          <div class="grind-labels"><span>Fine</span><span>Medium</span><span>Coarse</span></div>
+        </div>
+        <div class="rd"><div class="k">Water temp</div><div class="v" id="rdTemp">94°C <small id="rdTempF">/ 201°F</small></div></div>
+        <div class="rd"><div class="k">Ratio · dose</div><div class="v" id="rdRatio">1:16 <small id="rdWater">/ 320g</small></div></div>
+        <div class="rd"><div class="k">Total brew</div><div class="v" id="rdTime">2:45</div></div>
+      </div>
+
+      <div class="console-grid">
+        <div class="col-controls">
+          <div class="panel">
+            <div class="panel-title">01 · Brewer</div>
+            <div class="method-grid" id="methodGrid"></div>
+          </div>
+          <div class="panel">
+            <div class="panel-title">02 · Recipe <span class="hint" id="recipeHint">2 cups</span></div>
+            <div class="stepper-row">
+              <div class="stepper">
+                <div class="sk">Coffee dose</div>
+                <div class="sctrl">
+                  <button class="bump" data-act="dose-" aria-label="Less coffee">−</button>
+                  <span class="sval" id="doseVal">20g</span>
+                  <button class="bump" data-act="dose+" aria-label="More coffee">+</button>
+                </div>
+              </div>
+              <div class="stepper">
+                <div class="sk">Ratio (1 : n)</div>
+                <div class="sctrl">
+                  <button class="bump" data-act="ratio-" aria-label="Stronger">−</button>
+                  <span class="sval" id="ratioVal">16</span>
+                  <button class="bump" data-act="ratio+" aria-label="Lighter">+</button>
+                </div>
+              </div>
+            </div>
+            <div class="water-out"><span>Brew water</span><b id="waterVal">320 g</b></div>
+            <div class="cups">
+              <span class="cl">Quick</span>
+              <button class="chip" data-cups="1">1</button>
+              <button class="chip" data-cups="2">2</button>
+              <button class="chip" data-cups="3">3</button>
+              <button class="chip" data-cups="4">4</button>
+              <span class="cl" style="margin-left:2px">cups</span>
+            </div>
+          </div>
+          <div class="panel">
+            <div class="panel-title">03 · Dial in the cup</div>
+            <div class="dial">
+              <div class="dial-label"><span class="dl">Bitterness · strength of extraction</span><span class="dv" id="bitterTag">Balanced</span></div>
+              <div class="bitter-ctrl">
+                <span class="ends">Brighter</span>
+                <div class="notches" id="bitterNotches"></div>
+                <span class="ends">Bolder</span>
+              </div>
+            </div>
+            <div class="dial">
+              <div class="dial-label"><span class="dl">Flavour profile</span></div>
+              <div class="flavor-grid" id="flavorGrid"></div>
+            </div>
+            <div class="notes-line">Tasting toward → <b id="flavorNotes">caramel · brown sugar · round body · clean finish</b></div>
+          </div>
+        </div>
+
+        <div class="col-timer">
+          <div class="panel">
+            <div class="panel-title">04 · Guided brew <span class="hint" id="brewState">Ready</span></div>
+            <div class="timer-wrap">
+              <div class="ring-wrap">
+                <svg width="236" height="236" viewBox="0 0 236 236">
+                  <circle class="ring-bg" cx="118" cy="118" r="106"></circle>
+                  <circle class="ring-fg" id="ringFg" cx="118" cy="118" r="106" stroke-dasharray="666.02" stroke-dashoffset="666.02"></circle>
+                </svg>
+                <div class="ring-center">
+                  <div class="big" id="ringTime">2:45</div>
+                  <div class="small" id="ringLabel">Total · ready</div>
+                </div>
+              </div>
+              <div class="now">
+                <div class="phase" id="nowPhase">Press start to begin</div>
+                <div class="inst" id="nowInst">The brew runs as one timeline — bloom, pours, then drawdown. Steps tick off as the clock passes them.</div>
+                <div class="next" id="nowNext"></div>
+              </div>
+              <div class="timer-btns">
+                <button class="tbtn primary" id="startBtn">Start</button>
+                <button class="tbtn" id="resetBtn">Reset</button>
+              </div>
+              <div class="sound-toggle">
+                <span>Pour cues</span>
+                <button id="soundBtn" class="on" role="switch" aria-checked="true" aria-label="Toggle pour cue sound"><i></i></button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="steps" id="stepsList"></div>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="methods">
+  <div class="container">
+    <div class="sec-head reveal">
+      <span class="eyebrow">Ways to brew</span>
+      <h2>Every method makes a different cup.</h2>
+      <p class="lede">Immersion steeps the grounds in water; percolation pours water through them. The choice shapes body, clarity, and how much room for error you get.</p>
+    </div>
+    <div class="card-grid reveal" id="methodCards"></div>
+  </div>
+</section>
+
+<section class="section section--alt" id="beans">
+  <div class="container">
+    <div class="sec-head reveal">
+      <span class="eyebrow">Origin &amp; flavour map</span>
+      <h2>The cup starts in the ground it grew in.</h2>
+      <p class="lede">Altitude, varietal, and how the cherry is processed leave a fingerprint on the bean. Filter the regions by the flavours you like.</p>
+    </div>
+    <div class="filter-row reveal" id="originFilters">
+      <span class="fl">Filter</span>
+      <button class="pill on" data-tag="all">All regions</button>
+      <button class="pill" data-tag="fruity">Fruity &amp; bright</button>
+      <button class="pill" data-tag="balanced">Sweet &amp; balanced</button>
+      <button class="pill" data-tag="earthy">Earthy &amp; full</button>
+    </div>
+    <div class="origin-grid reveal" id="originGrid"></div>
+  </div>
+</section>
+
+<section class="section" id="grind">
+  <div class="container">
+    <div class="sec-head reveal">
+      <span class="eyebrow">Grind reference</span>
+      <h2>Coarse for slow, fine for fast.</h2>
+      <p class="lede">Grind size sets how quickly water moves through the coffee — and how much it pulls out. Match the grind to the contact time your brewer wants.</p>
+    </div>
+    <div class="grind-guide reveal">
+      <div class="gg-ends"><span>Extra fine</span><span>Extra coarse</span></div>
+      <div class="gg-bar"></div>
+      <div class="gg-marks" id="ggMarks"></div>
+    </div>
+  </div>
+</section>
+
+<section class="section section--alt" id="tasting">
+  <div class="container">
+    <div class="sec-head reveal">
+      <span class="eyebrow">The tasting wheel</span>
+      <h2>Put a word to what you taste.</h2>
+      <p class="lede">Coffee carries hundreds of flavour notes. Start broad with a family, then narrow to the descriptor that fits. Tap a family to explore it.</p>
+    </div>
+    <div class="taste-grid reveal">
+      <div><div class="taste-fams" id="tasteFams"></div></div>
+      <div class="taste-out" id="tasteOut"></div>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="glossary">
+  <div class="container">
+    <div class="sec-head reveal">
+      <span class="eyebrow">Field glossary</span>
+      <h2>The language of the brew bar.</h2>
+      <p class="lede">From bloom to TDS — the terms baristas use, in plain words. Search to jump straight to one.</p>
+    </div>
+    <div class="glo-search reveal">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg>
+      <input type="text" id="gloInput" placeholder="Search terms — e.g. bloom, channelling, TDS" aria-label="Search glossary">
+    </div>
+    <dl class="glo-grid reveal" id="gloGrid"></dl>
+    <div class="glo-empty" id="gloEmpty">No term matches that. Try another word.</div>
+  </div>
+</section>
+
+<section class="section section--alt" id="journal">
+  <div class="container">
+    <div class="sec-head reveal">
+      <span class="eyebrow">Brew journal</span>
+      <h2>Keep what worked. Fix what didn't.</h2>
+      <p class="lede">Log each brew with its recipe and a score. Patterns show up fast once you write them down. Entries are kept for this session.</p>
+    </div>
+    <div class="journal-grid reveal">
+      <form class="jform" id="jForm">
+        <h3>Log a brew</h3>
+        <p class="fhint">A few seconds now saves a guess later.</p>
+        <div class="field"><label for="jCoffee">Coffee</label><input type="text" id="jCoffee" placeholder="Origin, roaster, or name" required></div>
+        <div class="field-row">
+          <div class="field"><label for="jMethod">Brewer</label><select id="jMethod"></select></div>
+          <div class="field"><label for="jGrind">Grind</label><input type="text" id="jGrind" placeholder="e.g. 22 clicks"></div>
+        </div>
+        <div class="field-row">
+          <div class="field"><label for="jDose">Dose (g)</label><input type="number" id="jDose" placeholder="20" min="1" step="0.5"></div>
+          <div class="field"><label for="jRatio">Ratio (1 : n)</label><input type="number" id="jRatio" placeholder="16" min="10" step="0.5"></div>
+        </div>
+        <div class="field"><label>Score</label><div class="rate" id="jRate"><button type="button" data-score="1">1</button><button type="button" data-score="2">2</button><button type="button" data-score="3">3</button><button type="button" data-score="4">4</button><button type="button" data-score="5">5</button></div></div>
+        <div class="field"><label for="jNotes">Tasting notes</label><textarea id="jNotes" placeholder="What did the cup taste like? What would you change?"></textarea></div>
+        <button type="submit" class="jsubmit">Save brew →</button>
+      </form>
+      <div>
+        <div class="jstats" id="jStats" style="display:none">
+          <div class="jstat"><b id="jCount">0</b><span>Brews logged</span></div>
+          <div class="jstat"><b id="jAvg">—</b><span>Average score</span></div>
+          <div class="jstat"><b id="jBest">—</b><span>Top brewer</span></div>
+        </div>
+        <div class="jlist" id="jList"></div>
+        <div class="jempty" id="jEmpty"><div class="ji">○</div><div>No brews yet. Your first log will land here.</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<footer class="footer">
+  <div class="container">
+    <div class="foot-grid">
+      <div class="foot-brand">
+        <a href="groundwork.html" class="brand">SIMPLGRINDS<span class="dot"></span></a>
+        <p>A brewing instrument for filter coffee. Built for the people who weigh their beans and time their pours.</p>
+      </div>
+      <div class="foot-col">
+        <h5>Methods</h5>
+        <a href="groundwork-brewlab.html">Pour-over Lab</a>
+        <a href="groundwork-espresso.html">Espresso</a>
+        <a href="groundwork-kcup.html">K-Cup</a>
+        <a href="groundwork-frenchpress.html">French Press</a>
+      </div>
+      <div class="foot-col">
+        <h5>On this page</h5>
+        <a href="#grind">Grind guide</a>
+        <a href="#tasting">Tasting wheel</a>
+        <a href="#glossary">Glossary</a>
+        <a href="#journal">Brew journal</a>
+      </div>
+    </div>
+    <div class="foot-bottom">
+      <p>SIMPLGRINDS · pour-over, by the numbers</p>
+      <p>Brew responsibly. Stay caffeinated.</p>
+    </div>
+  </div>
+</footer>
+
+<script>
+"use strict";
+(function(){
+const $ = (s,r)=> (r||document).querySelector(s);
+const $$ = (s,r)=> Array.from((r||document).querySelectorAll(s));
+const clamp = (v,a,b)=> Math.max(a,Math.min(b,v));
+const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+const METHODS = {
+  v60:{ id:'v60', name:'Hario V60', sub:'Cone · 02', ratio:16, temp:94, grind:46, bloomMult:2.5, bloomTime:45,
+        pours:[{to:0.60,sec:30,label:'First pour'},{to:1.00,sec:30,label:'Second pour'}], draw:50,
+        blurb:'Fast, clean, and bright — the cone rewards an even, central pour.' },
+  chemex:{ id:'chemex', name:'Chemex', sub:'Carafe · 6-cup', ratio:16.5, temp:95, grind:64, bloomMult:2.3, bloomTime:45,
+        pours:[{to:0.50,sec:35,label:'First pour'},{to:0.80,sec:30,label:'Second pour'},{to:1.00,sec:30,label:'Third pour'}], draw:70,
+        blurb:'A thick filter strips oils and fines for a crystalline, tea-like cup.' },
+  kalita:{ id:'kalita', name:'Kalita Wave', sub:'Flat · 185', ratio:16, temp:93, grind:54, bloomMult:2.4, bloomTime:40,
+        pours:[{to:0.55,sec:30,label:'First pour'},{to:1.00,sec:35,label:'Second pour'}], draw:60,
+        blurb:'A flat bed and three small holes even out flow — forgiving and repeatable.' },
+  origami:{ id:'origami', name:'Origami', sub:'Cone · S', ratio:15.5, temp:92, grind:48, bloomMult:2.5, bloomTime:40,
+        pours:[{to:0.60,sec:28,label:'First pour'},{to:1.00,sec:28,label:'Second pour'}], draw:45,
+        blurb:'Ribbed walls speed drawdown for a juicy, high-clarity cup.' }
+};
+const FLAVORS = {
+  fruity:   {id:'fruity', name:'Bright & Fruity',  grind:+5, temp:-1, time:-0.06, bloom:-3, notes:'berry · citrus · stone fruit · juicy acidity'},
+  balanced: {id:'balanced', name:'Balanced & Sweet', grind:0,  temp:0,  time:0,     bloom:0,  notes:'caramel · brown sugar · round body · clean finish'},
+  chocolate:{id:'chocolate',name:'Rich & Chocolatey',grind:-5, temp:+1, time:+0.08, bloom:+5, notes:'cocoa · roasted nut · syrupy body · low acidity'},
+  floral:   {id:'floral', name:'Floral & Tea-like', grind:+7, temp:-2, time:-0.04, bloom:-2, notes:'jasmine · black tea · delicate · silky'}
+};
+const BITTER_TAGS = ['Very bright','Bright','Balanced','Bold','Very bold'];
+const state = { methodId:'v60', dose:20, ratio:16, bitterness:0, flavorId:'balanced' };
+
+function grindLabel(p){
+  if(p<=18) return 'Extra fine';
+  if(p<=32) return 'Fine';
+  if(p<=46) return 'Medium-fine';
+  if(p<=58) return 'Medium';
+  if(p<=72) return 'Medium-coarse';
+  return 'Coarse';
+}
+function fmt(sec){ sec=Math.round(sec); const m=Math.floor(sec/60), s=sec%60; return m+':'+String(s).padStart(2,'0'); }
+
+function compute(){
+  const m = METHODS[state.methodId], f = FLAVORS[state.flavorId], b = state.bitterness;
+  const grindPos = clamp(m.grind - b*6 + f.grind, 8, 92);
+  const tempC = Math.round(clamp(m.temp + b*1.5 + f.temp, 84, 96));
+  const timeFactor = 1 + b*0.06 + f.time;
+  const totalWater = Math.round(state.dose * state.ratio);
+  const bloomWater = Math.round(state.dose * m.bloomMult);
+  const bloomTime = Math.max(20, Math.round(m.bloomTime + f.bloom + b*2));
+  const phases = [];
+  phases.push({ type:'bloom', title:'Bloom', target:bloomWater, sec:bloomTime,
+    note:`Saturate the grounds with ${bloomWater} g of water and let the coffee de-gas.` });
+  m.pours.forEach(p=>{
+    const target = Math.round(totalWater * p.to);
+    phases.push({ type:'pour', title:p.label, target, sec:Math.max(8,Math.round(p.sec*timeFactor)),
+      note:`Pour steadily in slow spirals up to ${target} g total.` });
+  });
+  phases.push({ type:'draw', title:'Drawdown', target:totalWater, sec:Math.max(15,Math.round(m.draw*timeFactor)),
+    note:'Stop pouring. Let the bed drain fully and the dripper run dry.' });
+  let acc=0; phases.forEach(p=>{ p.start=acc; acc+=p.sec; p.end=acc; });
+  return { grindPos, grindLabel:grindLabel(grindPos), tempC, tempF:Math.round(tempC*9/5+32),
+           totalWater, bloomWater, phases, totalTime:acc };
+}
+
+function flash(el){ if(reduceMotion||!el) return; el.classList.remove('rd-pulse'); void el.offsetWidth; el.classList.add('rd-pulse'); }
+
+function renderReadouts(prev){
+  const c = compute(), m = METHODS[state.methodId];
+  $('#rdGrind').textContent = c.grindLabel;
+  $('#grindMarker').style.left = c.grindPos + '%';
+  $('#rdTemp').innerHTML = c.tempC+'°C <small>/ '+c.tempF+'°F</small>';
+  $('#rdRatio').innerHTML = '1:'+state.ratio+' <small id="rdWater">/ '+c.totalWater+'g</small>';
+  $('#rdTime').textContent = fmt(c.totalTime);
+  $('#doseVal').textContent = state.dose+'g';
+  $('#ratioVal').textContent = state.ratio;
+  $('#waterVal').textContent = c.totalWater+' g';
+  const cups = Math.max(1, Math.round(c.totalWater/250));
+  $('#recipeHint').textContent = cups+(cups===1?' cup':' cups');
+  $('#flavorNotes').textContent = FLAVORS[state.flavorId].notes;
+  $('#bitterTag').textContent = BITTER_TAGS[state.bitterness+2];
+  $('#specName').textContent = m.name;
+  $('#specBlurb').textContent = m.blurb;
+  $('#specDose').innerHTML = '<b>'+state.dose+'g</b> → '+c.totalWater+'g';
+  $('#specGrind').textContent = c.grindLabel;
+  $('#specTemp').textContent = c.tempC+'°C';
+  $('#specTime').textContent = fmt(c.totalTime);
+  if(prev){
+    if(prev.grind!==c.grindLabel) flash($('#rdGrind'));
+    if(prev.temp!==c.tempC) flash($('#rdTemp'));
+    if(prev.water!==c.totalWater) flash($('#rdRatio'));
+    if(prev.time!==c.totalTime) flash($('#rdTime'));
+  }
+  return c;
+}
+function snapshot(){ const c=compute(); return {grind:c.grindLabel,temp:c.tempC,water:c.totalWater,time:c.totalTime}; }
+
+let checked = [];
+let computed = compute();
+
+function renderSteps(){
+  computed = compute();
+  const list = $('#stepsList');
+  list.innerHTML = '';
+  checked = computed.phases.map(()=>false);
+  computed.phases.forEach((p,i)=>{
+    const row = document.createElement('div');
+    row.className = 'step';
+    row.id = 'step-'+i;
+    row.innerHTML =
+      '<div class="step-idx">'+String(i+1).padStart(2,'0')+'</div>'+
+      '<div class="step-main"><div class="st">'+p.title+'</div><div class="sn">'+p.note+'</div></div>'+
+      '<div class="step-meta"><span class="tg">'+(p.type==='draw'?'hold':'→ '+p.target+'g')+'</span><span class="dur">'+p.sec+'s</span></div>'+
+      '<button class="step-check" aria-label="Mark '+p.title+' done" data-i="'+i+'">'+
+        '<svg viewBox="0 0 24 24" fill="none" stroke="#1a1208" stroke-width="3.2"><path d="M4 12l5 5L20 6"/></svg></button>';
+    list.appendChild(row);
+  });
+  $$('.step-check', list).forEach(btn=>{
+    btn.addEventListener('click', ()=>{
+      const i = +btn.dataset.i;
+      checked[i] = !checked[i];
+      autoChecked[i] = checked[i];
+      btn.classList.toggle('done', checked[i]);
+      $('#step-'+i).classList.toggle('done-row', checked[i]);
+    });
+  });
+}
+
+let timer = { running:false, elapsed:0, raf:null, last:0, soundOn:true };
+let autoChecked = [];
+const RING_C = 2*Math.PI*106;
+
+function setRing(frac){ $('#ringFg').style.strokeDashoffset = RING_C*(1-clamp(frac,0,1)); }
+function currentPhaseIndex(t){
+  const ph = computed.phases;
+  for(let i=0;i<ph.length;i++){ if(t < ph[i].end) return i; }
+  return ph.length-1;
+}
+function updateBrewUI(){
+  const t = timer.elapsed, total = computed.totalTime, ph = computed.phases;
+  const finished = t>=total;
+  const idx = finished ? ph.length-1 : currentPhaseIndex(t);
+  setRing(finished?1:t/total);
+  if(!timer.running && t===0){
+    $('#ringTime').textContent = fmt(total);
+    $('#ringLabel').textContent = 'Total · ready';
+  } else if(finished){
+    $('#ringTime').textContent = fmt(total);
+    $('#ringLabel').textContent = 'Brew complete';
+  } else {
+    $('#ringTime').textContent = fmt(t);
+    $('#ringLabel').textContent = 'Elapsed';
+  }
+  $$('.step').forEach(s=>s.classList.remove('current'));
+  if(timer.running || (t>0 && !finished)){
+    const el = $('#step-'+idx); if(el) el.classList.add('current');
+  }
+  ph.forEach((p,i)=>{
+    if(t>=p.end && !autoChecked[i]){
+      autoChecked[i]=true; checked[i]=true;
+      const c=$('#step-'+i+' .step-check'); if(c) c.classList.add('done');
+      const r=$('#step-'+i); if(r) r.classList.add('done-row');
+    }
+  });
+  if(finished){
+    $('#nowPhase').textContent = 'Done — pour and enjoy';
+    $('#nowInst').textContent = 'Give it a gentle swirl, let it cool a minute, and taste. Log it in the journal below.';
+    $('#nowNext').textContent = 'Total time · '+fmt(total);
+    $('#brewState').textContent = 'Complete';
+  } else if(timer.running || t>0){
+    const p = ph[idx];
+    $('#nowPhase').textContent = p.title;
+    $('#nowInst').textContent = p.note;
+    const rem = Math.ceil(p.end - t);
+    const nxt = ph[idx+1];
+    $('#nowNext').textContent = nxt ? (nxt.title+' in '+fmt(rem)) : ('Drawdown ends in '+fmt(rem));
+    $('#brewState').textContent = timer.running?'Brewing':'Paused';
+  }
+}
+
+function tick(now){
+  if(!timer.running) return;
+  if(!timer.last) timer.last = now;
+  const dt = (now - timer.last)/1000;
+  timer.last = now;
+  const prevIdx = currentPhaseIndex(timer.elapsed);
+  timer.elapsed += dt;
+  if(timer.elapsed < computed.totalTime){
+    const newIdx = currentPhaseIndex(timer.elapsed);
+    if(newIdx!==prevIdx) beep(660,0.12);
+  }
+  if(timer.elapsed >= computed.totalTime){
+    timer.elapsed = computed.totalTime;
+    timer.running = false;
+    $('#startBtn').textContent = 'Start';
+    beep(523,0.16); setTimeout(()=>beep(784,0.22),150);
+    updateBrewUI(); return;
+  }
+  updateBrewUI();
+  timer.raf = requestAnimationFrame(tick);
+}
+
+function startPause(){
+  if(timer.elapsed>=computed.totalTime) resetTimer();
+  if(timer.running){
+    timer.running=false; $('#startBtn').textContent='Resume';
+    if(timer.raf) cancelAnimationFrame(timer.raf);
+    updateBrewUI();
+  } else {
+    initAudio();
+    timer.running=true; timer.last=0; $('#startBtn').textContent='Pause';
+    beep(440,0.1);
+    timer.raf = requestAnimationFrame(tick);
+  }
+}
+function resetTimer(){
+  timer.running=false; timer.elapsed=0; timer.last=0;
+  if(timer.raf) cancelAnimationFrame(timer.raf);
+  autoChecked = computed.phases.map(()=>false);
+  checked = computed.phases.map(()=>false);
+  $$('.step-check').forEach(c=>c.classList.remove('done'));
+  $$('.step').forEach(s=>{s.classList.remove('current');s.classList.remove('done-row');});
+  $('#startBtn').textContent='Start';
+  $('#nowPhase').textContent='Press start to begin';
+  $('#nowInst').textContent='The brew runs as one timeline — bloom, pours, then drawdown. Steps tick off as the clock passes them.';
+  $('#nowNext').textContent='';
+  $('#brewState').textContent='Ready';
+  setRing(0);
+  $('#ringTime').textContent=fmt(computed.totalTime);
+  $('#ringLabel').textContent='Total · ready';
+}
+
+let actx=null;
+function initAudio(){ if(!actx){ try{ actx = new (window.AudioContext||window.webkitAudioContext)(); }catch(e){ actx=null; } } if(actx&&actx.state==='suspended') actx.resume(); }
+function beep(freq,dur){
+  if(!timer.soundOn||!actx) return;
+  try{
+    const o=actx.createOscillator(), g=actx.createGain();
+    o.type='sine'; o.frequency.value=freq;
+    o.connect(g); g.connect(actx.destination);
+    const t=actx.currentTime;
+    g.gain.setValueAtTime(0.0001,t);
+    g.gain.exponentialRampToValueAtTime(0.18,t+0.01);
+    g.gain.exponentialRampToValueAtTime(0.0001,t+dur);
+    o.start(t); o.stop(t+dur+0.02);
+  }catch(e){}
+}
+
+function buildMethods(){
+  const grid = $('#methodGrid');
+  grid.innerHTML='';
+  Object.values(METHODS).forEach(m=>{
+    const b=document.createElement('button');
+    b.className='method-btn'+(m.id===state.methodId?' on':'');
+    b.dataset.method=m.id;
+    b.innerHTML='<div class="mn">'+m.name+'</div><div class="md">'+m.sub+'</div>';
+    b.addEventListener('click',()=>{
+      const prev=snapshot();
+      state.methodId=m.id; state.ratio=METHODS[m.id].ratio;
+      $$('.method-btn').forEach(x=>x.classList.toggle('on',x.dataset.method===m.id));
+      renderReadouts(prev); renderSteps(); resetTimer();
+    });
+    grid.appendChild(b);
+  });
+}
+function buildBitter(){
+  const wrap=$('#bitterNotches'); wrap.innerHTML='';
+  for(let i=-2;i<=2;i++){
+    const n=document.createElement('button');
+    n.className='notch'+(i===state.bitterness?' on':'');
+    n.dataset.b=i; n.setAttribute('aria-label','Bitterness level '+(i+3)+' of 5');
+    n.addEventListener('click',()=>{
+      const prev=snapshot();
+      state.bitterness=i;
+      $$('.notch').forEach(x=>x.classList.toggle('on',+x.dataset.b===i));
+      renderReadouts(prev); renderSteps(); resetTimer();
+    });
+    wrap.appendChild(n);
+  }
+}
+function buildFlavors(){
+  const grid=$('#flavorGrid'); grid.innerHTML='';
+  Object.values(FLAVORS).forEach(f=>{
+    const b=document.createElement('button');
+    b.className='flavor-btn'+(f.id===state.flavorId?' on':'');
+    b.dataset.flavor=f.id;
+    b.innerHTML='<div class="fn">'+f.name+'</div><div class="fd">'+f.notes+'</div>';
+    b.addEventListener('click',()=>{
+      const prev=snapshot();
+      state.flavorId=f.id;
+      $$('.flavor-btn').forEach(x=>x.classList.toggle('on',x.dataset.flavor===f.id));
+      renderReadouts(prev); renderSteps(); resetTimer();
+    });
+    grid.appendChild(b);
+  });
+}
+function wireSteppers(){
+  $$('.bump').forEach(btn=>{
+    btn.addEventListener('click',()=>{
+      const prev=snapshot();
+      const a=btn.dataset.act;
+      if(a==='dose-') state.dose=clamp(state.dose-2,10,60);
+      if(a==='dose+') state.dose=clamp(state.dose+2,10,60);
+      if(a==='ratio-') state.ratio=clamp(Math.round((state.ratio-0.5)*2)/2,13,18);
+      if(a==='ratio+') state.ratio=clamp(Math.round((state.ratio+0.5)*2)/2,13,18);
+      renderReadouts(prev); renderSteps(); resetTimer();
+    });
+  });
+  $$('.chip[data-cups]').forEach(c=>{
+    c.addEventListener('click',()=>{
+      const prev=snapshot();
+      const cups=+c.dataset.cups;
+      state.dose=clamp(cups*16,10,60);
+      renderReadouts(prev); renderSteps(); resetTimer();
+    });
+  });
+}
+
+const METHOD_CARDS = [
+  {n:'Pour-over',t:'Percolation',cls:'perc',p:'Water poured through a paper filter for a clean, bright, articulate cup. The most precise way to brew at home.',grind:'Medium-fine',ratio:'1:16',time:'2–4 min',temp:'92–96°C'},
+  {n:'Espresso',t:'Pressure',cls:'',p:'Nine bars of pressure forced through a fine, dense puck. Intense, syrupy, and the base for milk drinks.',grind:'Very fine',ratio:'1:2',time:'25–30 s',temp:'92–94°C'},
+  {n:'AeroPress',t:'Immersion',cls:'imm',p:'Steep then press through a filter. Fast, forgiving, endlessly tweakable, and built for one cup.',grind:'Med-fine',ratio:'1:14',time:'1–2 min',temp:'80–92°C'},
+  {n:'French press',t:'Immersion',cls:'imm',p:'Full immersion with a metal mesh. Heavy-bodied and oily — nothing gets filtered out but the grounds.',grind:'Coarse',ratio:'1:15',time:'4 min',temp:'93–96°C'},
+  {n:'Moka pot',t:'Pressure',cls:'',p:'Stovetop steam pressure pushes water up through the grounds. Bold, concentrated, espresso-adjacent.',grind:'Fine',ratio:'1:7',time:'4–5 min',temp:'Boil'},
+  {n:'Cold brew',t:'Immersion',cls:'imm',p:'Steeped cold for 12–24 hours. Low acidity, smooth and sweet, with a long fridge life.',grind:'Extra coarse',ratio:'1:8',time:'12–24 hr',temp:'Cold'}
+];
+function buildMethodCards(){
+  const wrap=$('#methodCards');
+  METHOD_CARDS.forEach(m=>{
+    const c=document.createElement('article');
+    c.className='mcard';
+    c.innerHTML='<div class="top"><h3>'+m.n+'</h3><span class="tag '+m.cls+'">'+m.t+'</span></div>'+
+      '<p>'+m.p+'</p>'+
+      '<div class="specs">'+
+        '<div class="sp"><span class="k">Grind</span><span class="v">'+m.grind+'</span></div>'+
+        '<div class="sp"><span class="k">Ratio</span><span class="v">'+m.ratio+'</span></div>'+
+        '<div class="sp"><span class="k">Brew time</span><span class="v">'+m.time+'</span></div>'+
+        '<div class="sp"><span class="k">Water</span><span class="v">'+m.temp+'</span></div>'+
+      '</div>';
+    wrap.appendChild(c);
+  });
+}
+
+const ORIGINS = [
+  {n:'Ethiopia',reg:'Yirgacheffe',tag:'fruity',notes:'Bright and floral with tea-like delicacy. The birthplace of coffee.',process:'Washed / Natural',alt:'1,800–2,200m',roast:'Light',dots:['blueberry','jasmine','lemon','bergamot']},
+  {n:'Kenya',reg:'Nyeri · AA',tag:'fruity',notes:'Punchy blackcurrant acidity with a juicy, wine-like body.',process:'Washed',alt:'1,600–2,100m',roast:'Light–Med',dots:['blackcurrant','tomato','grapefruit']},
+  {n:'Colombia',reg:'Huila',tag:'balanced',notes:'Smooth, sweet, and dependable — caramel with a gentle citrus lift.',process:'Washed',alt:'1,400–1,900m',roast:'Med',dots:['caramel','red apple','cocoa']},
+  {n:'Brazil',reg:'Cerrado',tag:'balanced',notes:'Low-acid, nutty, and chocolatey. The backbone of countless espresso blends.',process:'Natural / Pulped',alt:'900–1,300m',roast:'Med–Dark',dots:['peanut','chocolate','caramel']},
+  {n:'Guatemala',reg:'Antigua',tag:'balanced',notes:'Full-bodied and complex, with cocoa, spice, and a touch of orange.',process:'Washed',alt:'1,500–1,800m',roast:'Med',dots:['cocoa','orange','baking spice']},
+  {n:'Costa Rica',reg:'Tarrazú',tag:'fruity',notes:'Clean and crisp with bright stone-fruit and honeyed sweetness.',process:'Honey / Washed',alt:'1,200–1,900m',roast:'Light–Med',dots:['apricot','honey','citrus']},
+  {n:'Sumatra',reg:'Mandheling',tag:'earthy',notes:'Earthy, herbal, and heavy-bodied with low acidity. Unmistakable.',process:'Wet-hulled',alt:'1,100–1,600m',roast:'Dark',dots:['cedar','tobacco','dark chocolate']},
+  {n:'Yemen',reg:'Mokha · Sanani',tag:'earthy',notes:'Wild, winey, and fruit-forward with a dried-fruit funk all its own.',process:'Natural',alt:'1,500–2,200m',roast:'Med–Dark',dots:['date','dried cherry','cardamom']},
+  {n:'Honduras',reg:'Marcala',tag:'balanced',notes:'Soft and sweet with mellow acidity — easy-drinking and food-friendly.',process:'Washed',alt:'1,300–1,700m',roast:'Med',dots:['brown sugar','hazelnut','plum']}
+];
+function buildOrigins(){
+  const grid=$('#originGrid');
+  ORIGINS.forEach(o=>{
+    const c=document.createElement('article');
+    c.className='ocard'; c.dataset.tag=o.tag;
+    c.innerHTML='<div class="oh"><h3>'+o.n+'</h3><span class="reg">'+o.reg+'</span></div>'+
+      '<p class="notes">'+o.notes+'</p>'+
+      '<div class="meta">'+
+        '<div class="mrow"><span>Process</span><span>'+o.process+'</span></div>'+
+        '<div class="mrow"><span>Altitude</span><span>'+o.alt+'</span></div>'+
+        '<div class="mrow"><span>Best roast</span><span>'+o.roast+'</span></div>'+
+      '</div>'+
+      '<div class="flavor-dots">'+o.dots.map(d=>'<span class="fdot">'+d+'</span>').join('')+'</div>';
+    grid.appendChild(c);
+  });
+  $$('#originFilters .pill').forEach(p=>{
+    p.addEventListener('click',()=>{
+      $$('#originFilters .pill').forEach(x=>x.classList.toggle('on',x===p));
+      const tag=p.dataset.tag;
+      $$('.ocard').forEach(card=>{ card.classList.toggle('hide', tag!=='all' && card.dataset.tag!==tag); });
+    });
+  });
+}
+
+const GRIND_MARKS = [
+  {pos:6,n:'Turkish',s:'Powder'},{pos:20,n:'Espresso',s:'Fine'},{pos:36,n:'Moka / AeroPress',s:'Med-fine'},
+  {pos:52,n:'Pour-over',s:'Medium'},{pos:66,n:'Drip / Flat',s:'Med-coarse'},{pos:82,n:'French press',s:'Coarse'},{pos:94,n:'Cold brew',s:'Extra coarse'}
+];
+function buildGrindGuide(){
+  const wrap=$('#ggMarks');
+  GRIND_MARKS.forEach((g,i)=>{
+    const d=document.createElement('div');
+    d.className='gg-mark'; d.style.left=g.pos+'%'; d.style.top=(i%2===0?0:64)+'px';
+    d.innerHTML='<div class="ln"></div><div class="gm">'+g.n+'</div><div class="gs">'+g.s+'</div>';
+    wrap.appendChild(d);
+  });
+}
+
+const TASTE = {
+  fruity:{name:'Fruity',desc:'The first thing many people notice — from sharp citrus to deep, jammy berries. Often paired with bright acidity.',notes:['blueberry','strawberry','lemon','grapefruit','green apple','cherry','peach','tropical','grape','pomegranate']},
+  floral:{name:'Floral',desc:'Delicate, perfumed aromatics most common in high-grown washed coffees from East Africa.',notes:['jasmine','rose','hibiscus','chamomile','black tea','elderflower','honeysuckle']},
+  sweet:{name:'Sweet',desc:'The sugars that survive roasting — caramel, syrup, and dried fruit. A hallmark of a well-developed cup.',notes:['caramel','brown sugar','honey','maple','molasses','vanilla','dried fig','toffee']},
+  nutty:{name:'Nutty / Cocoa',desc:'Comforting, roasty depth. Common in Brazilian and medium-dark coffees, and the soul of most espresso blends.',notes:['almond','hazelnut','peanut','dark chocolate','milk chocolate','cocoa nib','walnut']},
+  spice:{name:'Spice',desc:'Warm, aromatic notes that add complexity — often in naturals and washed Central Americans.',notes:['cinnamon','clove','nutmeg','black pepper','cardamom','anise']},
+  roasty:{name:'Roasty',desc:'Flavours created in the roaster. A little adds body; too much buries origin character.',notes:['toast','smoke','dark chocolate','tobacco','roasted grain','burnt sugar']},
+  green:{name:'Green / Vegetal',desc:'Often a sign of under-development or under-extraction — but in small doses, fresh and herbal.',notes:['grassy','herbal','peapod','raw','hay','green pepper']},
+  ferment:{name:'Sour / Fermented',desc:'From the processing method — funky and winey when intentional, sharp and unpleasant when not.',notes:['winey','boozy','overripe','vinegar','sour','yeasty','rummy']}
+};
+let activeTaste='fruity';
+function buildTaste(){
+  const fams=$('#tasteFams');
+  Object.keys(TASTE).forEach(k=>{
+    const b=document.createElement('button');
+    b.className='fam'+(k===activeTaste?' on':'');
+    b.dataset.k=k; b.textContent=TASTE[k].name;
+    b.addEventListener('click',()=>{ activeTaste=k; $$('.fam').forEach(x=>x.classList.toggle('on',x.dataset.k===k)); renderTaste(); });
+    fams.appendChild(b);
+  });
+  renderTaste();
+}
+function renderTaste(){
+  const t=TASTE[activeTaste];
+  $('#tasteOut').innerHTML='<h3>'+t.name+'</h3><p class="desc">'+t.desc+'</p>'+
+    '<div class="note-cloud">'+t.notes.map(n=>'<span>'+n+'</span>').join('')+'</div>';
+}
+
+const GLOSSARY = [
+  ['Agitation','','Stirring or swirling the slurry to even out extraction. More agitation pulls more out of the grounds.'],
+  ['Bloom','','The initial pour that wets the grounds and lets trapped CO₂ escape. Fresh coffee blooms vigorously.'],
+  ['Body','','The weight and texture of the coffee in your mouth — from tea-light to syrupy.'],
+  ['Bypass','','Water that slips past the coffee bed without extracting. The Chemex spout and cone walls invite it.'],
+  ['Channelling','','When water carves a fast path through the bed, over-extracting some grounds and skipping others.'],
+  ['Crema','','The reddish-brown foam on top of an espresso shot, formed by CO₂ emulsifying oils under pressure.'],
+  ['Cupping','','A standardised way to taste and score coffees by slurping from a bowl. The industry tasting method.'],
+  ['Degassing','','The release of CO₂ from roasted beans over days. Too-fresh coffee can brew unevenly.'],
+  ['Dose','','The weight of dry coffee you brew with, measured in grams.'],
+  ['Drawdown','','The final stage of a pour-over as the last water drains through the bed.'],
+  ['Extraction','','How much flavour is dissolved out of the grounds. Under-extracted is sour; over-extracted is bitter.'],
+  ['Fines','','The smallest grind particles. They extract fast and can clog the filter, slowing flow.'],
+  ['Gooseneck','','A kettle with a long, thin spout for a slow, precise, controllable pour.'],
+  ['Hard / soft water','','Mineral content changes extraction. Some minerals help; too many mute flavour.'],
+  ['Immersion','','A brew style where coffee steeps fully in water — French press, AeroPress, cold brew.'],
+  ['Percolation','','A brew style where water flows through the coffee bed — pour-over and drip.'],
+  ['Pre-infusion','','A gentle initial wetting before full pressure or flow, for a more even extraction.'],
+  ['Puck','','The compressed disc of spent grounds in a portafilter after pulling espresso.'],
+  ['Ratio','','Coffee-to-water, written 1:n. 1:16 means one gram of coffee per sixteen grams of water.'],
+  ['Refractometer','','A device that measures dissolved solids to calculate extraction yield precisely.'],
+  ['Slurry','','The mix of coffee grounds and water during brewing.'],
+  ['Tamp','','Pressing espresso grounds into a level, even puck before brewing.'],
+  ['TDS','','Total Dissolved Solids — the concentration of coffee in the cup, as a percentage.'],
+  ['Turbulence','','Movement in the slurry from pouring, which helps grounds extract evenly.'],
+  ['Yield','','For espresso, the weight of liquid out. For brewing, the percent of coffee extracted.']
+];
+function buildGlossary(){
+  const grid=$('#gloGrid');
+  GLOSSARY.slice().sort((a,b)=>a[0].localeCompare(b[0])).forEach(g=>{
+    const d=document.createElement('div'); d.className='gterm';
+    d.dataset.term=(g[0]+' '+g[2]).toLowerCase();
+    d.innerHTML='<dt>'+g[0]+(g[1]?' <span class="ph">'+g[1]+'</span>':'')+'</dt><dd>'+g[2]+'</dd>';
+    grid.appendChild(d);
+  });
+  $('#gloInput').addEventListener('input',e=>{
+    const q=e.target.value.toLowerCase().trim();
+    let shown=0;
+    $$('.gterm').forEach(t=>{ const hit = !q || t.dataset.term.includes(q); t.classList.toggle('hide',!hit); if(hit) shown++; });
+    $('#gloEmpty').style.display = shown?'none':'block';
+    $('#gloGrid').style.display = shown?'grid':'none';
+  });
+}
+
+let journal=[];
+let jScore=0;
+function buildJournal(){
+  const sel=$('#jMethod');
+  Object.values(METHODS).forEach(m=>{ const o=document.createElement('option'); o.value=m.name; o.textContent=m.name; sel.appendChild(o); });
+  ['AeroPress','French press','Espresso','Moka pot','Cold brew'].forEach(n=>{ const o=document.createElement('option'); o.value=n; o.textContent=n; sel.appendChild(o); });
+  $$('#jRate button').forEach(b=>{
+    b.addEventListener('click',()=>{
+      jScore=+b.dataset.score;
+      $$('#jRate button').forEach(x=>x.classList.toggle('on',+x.dataset.score<=jScore));
+    });
+  });
+  $('#jForm').addEventListener('submit',e=>{
+    e.preventDefault();
+    const entry={
+      coffee:$('#jCoffee').value.trim()||'Unnamed coffee',
+      method:$('#jMethod').value,
+      grind:$('#jGrind').value.trim(),
+      dose:$('#jDose').value,
+      ratio:$('#jRatio').value,
+      score:jScore||'—',
+      notes:$('#jNotes').value.trim(),
+      date:new Date().toLocaleDateString(undefined,{month:'short',day:'numeric',year:'numeric'})
+    };
+    journal.unshift(entry);
+    renderJournal();
+    e.target.reset(); jScore=0; $$('#jRate button').forEach(x=>x.classList.remove('on'));
+    $('#jCoffee').focus();
+  });
+  renderJournal();
+}
+function renderJournal(){
+  const list=$('#jList');
+  if(journal.length===0){ $('#jEmpty').style.display='block'; $('#jStats').style.display='none'; list.innerHTML=''; return; }
+  $('#jEmpty').style.display='none'; $('#jStats').style.display='flex';
+  const scored=journal.filter(j=>typeof j.score==='number');
+  $('#jCount').textContent=journal.length;
+  $('#jAvg').textContent= scored.length? (scored.reduce((a,j)=>a+j.score,0)/scored.length).toFixed(1) : '—';
+  const tally={}; journal.forEach(j=>tally[j.method]=(tally[j.method]||0)+1);
+  $('#jBest').textContent = Object.keys(tally).sort((a,b)=>tally[b]-tally[a])[0] || '—';
+  list.innerHTML='';
+  journal.forEach((j,i)=>{
+    const specs=[];
+    if(j.dose) specs.push(j.dose+'g');
+    if(j.ratio) specs.push('1:'+j.ratio);
+    if(j.grind) specs.push(j.grind);
+    const el=document.createElement('article'); el.className='jentry';
+    el.innerHTML='<div class="jtop"><div><h4>'+escapeHtml(j.coffee)+'</h4><div class="jdate">'+j.method+' · '+j.date+'</div></div>'+
+      '<div class="jscore">'+(typeof j.score==='number'? j.score+'/5':'—')+'</div></div>'+
+      (specs.length?'<div class="jspecs">'+specs.map(s=>'<span>'+escapeHtml(s)+'</span>').join('')+'</div>':'')+
+      (j.notes?'<div class="jnotes">"'+escapeHtml(j.notes)+'"</div>':'')+
+      '<button class="jdel" data-i="'+i+'">Remove</button>';
+    list.appendChild(el);
+  });
+  $$('.jdel').forEach(b=>b.addEventListener('click',()=>{ journal.splice(+b.dataset.i,1); renderJournal(); }));
+}
+function escapeHtml(s){ return String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
+
+function wireNav(){
+  const nav=$('#nav'), toggle=$('#navToggle');
+  toggle.addEventListener('click',()=>{
+    const open=nav.classList.toggle('open');
+    toggle.setAttribute('aria-expanded',open?'true':'false');
+  });
+  $$('.nav-links a, .nav.open .nav-cta').forEach(a=>a.addEventListener('click',()=>{
+    nav.classList.remove('open'); toggle.setAttribute('aria-expanded','false');
+  }));
+  const ids=['lab','methods','beans','grind','tasting','glossary','journal'];
+  const sections=ids.map(id=>$('#'+id)).filter(Boolean);
+  const obs=new IntersectionObserver(entries=>{
+    entries.forEach(en=>{
+      if(en.isIntersecting){
+        const id=en.target.id;
+        $$('.nav-links a').forEach(a=>a.classList.toggle('active',a.getAttribute('href')==='#'+id));
+      }
+    });
+  },{rootMargin:'-45% 0px -50% 0px'});
+  sections.forEach(s=>obs.observe(s));
+}
+function wireReveal(){
+  if(reduceMotion){ $$('.reveal').forEach(el=>el.classList.add('in')); return; }
+  const obs=new IntersectionObserver((entries,o)=>{
+    entries.forEach(en=>{ if(en.isIntersecting){ en.target.classList.add('in'); o.unobserve(en.target); } });
+  },{rootMargin:'0px 0px -10% 0px',threshold:0.08});
+  $$('.reveal').forEach(el=>obs.observe(el));
+}
+function heroTicker(){
+  if(reduceMotion) return;
+  const card=$('#specCard');
+  const ids=Object.keys(METHODS); let i=0;
+  setInterval(()=>{
+    if(timer.running) return;
+    i=(i+1)%ids.length;
+    const prev=snapshot();
+    state.methodId=ids[i]; state.ratio=METHODS[ids[i]].ratio;
+    $$('.method-btn').forEach(x=>x.classList.toggle('on',x.dataset.method===ids[i]));
+    renderReadouts(prev); renderSteps(); resetTimer();
+    if(card){ card.style.opacity='0.55'; setTimeout(()=>card.style.opacity='1',180); }
+  },5200);
+}
+
+function init(){
+  buildMethods(); buildBitter(); buildFlavors(); wireSteppers();
+  buildMethodCards(); buildOrigins(); buildGrindGuide(); buildTaste(); buildGlossary(); buildJournal();
+  renderReadouts(null); renderSteps(); resetTimer();
+  $('#startBtn').addEventListener('click',startPause);
+  $('#resetBtn').addEventListener('click',resetTimer);
+  $('#soundBtn').addEventListener('click',function(){
+    timer.soundOn=!timer.soundOn; this.classList.toggle('on',timer.soundOn);
+    this.setAttribute('aria-checked',timer.soundOn?'true':'false');
+    if(timer.soundOn){ initAudio(); beep(660,0.1); }
+  });
+  wireNav(); wireReveal(); heroTicker();
+}
+if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',init); else init();
+})();
+</script>
+</body>
+</html>

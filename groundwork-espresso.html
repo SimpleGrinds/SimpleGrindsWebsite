@@ -1,0 +1,421 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Espresso — SIMPLGRINDS</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#EFEEE9;--bg-2:#E7E5DE;--surface:#FAF9F6;--ink:#1A1714;--ink-soft:#463F38;
+  --muted:#7C7268;--line:rgba(26,23,20,0.12);--line-soft:rgba(26,23,20,0.07);
+  --accent:#A8551F;--accent-2:#C98A3C;--good:#5C6E3A;
+  --dark:#16130F;--dark-2:#1E1A15;--dark-3:#272118;
+  --dark-line:rgba(237,231,221,0.13);--on-dark:#ECE6DC;
+  --on-dark-soft:#C7BDB0;--on-dark-muted:#8C8275;
+  --r:10px;--container:1180px;--ease:cubic-bezier(.22,.61,.36,1);
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:"IBM Plex Sans",system-ui,-apple-system,sans-serif;font-size:17px;line-height:1.65;-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility;overflow-x:hidden}
+h1,h2,h3,h4{font-family:"Space Grotesk",system-ui,sans-serif;font-weight:600;letter-spacing:-0.02em;line-height:1.05;margin:0}
+p{margin:0}
+a{color:inherit;text-decoration:none}
+button{font-family:inherit;cursor:pointer;border:none;background:none;color:inherit}
+::selection{background:var(--accent);color:#fff}
+:focus-visible{outline:2px solid var(--accent);outline-offset:3px;border-radius:4px}
+
+.container{max-width:var(--container);margin:0 auto;padding:0 28px}
+.section{padding:clamp(72px,10vw,132px) 0;position:relative}
+.section--alt{background:var(--bg-2)}
+.eyebrow{font-family:"IBM Plex Mono",monospace;font-size:.72rem;font-weight:500;text-transform:uppercase;letter-spacing:.2em;color:var(--muted);display:inline-flex;align-items:center;gap:.6em}
+.eyebrow::before{content:"";width:18px;height:1px;background:var(--accent);display:inline-block}
+.eyebrow--dark{color:var(--on-dark-muted)}
+.eyebrow--dark::before{background:var(--accent-2)}
+.sec-head{max-width:680px;margin-bottom:clamp(36px,5vw,64px)}
+.sec-head h2{font-size:clamp(1.9rem,4.4vw,3.1rem);margin:18px 0 0}
+.sec-head .lede{margin-top:18px;color:var(--ink-soft);font-size:1.06rem;max-width:60ch}
+.reveal{opacity:0;transform:translateY(22px);transition:opacity .7s var(--ease),transform .7s var(--ease)}
+.reveal.in{opacity:1;transform:none}
+
+/* NAV */
+.nav{position:sticky;top:0;z-index:60;background:rgba(239,238,233,.82);backdrop-filter:blur(14px);border-bottom:1px solid var(--line)}
+.nav-inner{max-width:var(--container);margin:0 auto;padding:0 28px;height:64px;display:flex;align-items:center;justify-content:space-between;gap:24px}
+.brand{display:flex;align-items:baseline;gap:.5ch;font-family:"Space Grotesk",sans-serif;font-weight:700;font-size:1.18rem;letter-spacing:.02em}
+.brand .dot{width:7px;height:7px;border-radius:50%;background:var(--accent);display:inline-block;transform:translateY(-1px)}
+.brand small{font-family:"IBM Plex Mono",monospace;font-weight:400;font-size:.62rem;letter-spacing:.16em;color:var(--muted);text-transform:uppercase;margin-left:.4ch}
+.nav-links{display:flex;align-items:center;gap:4px}
+.nav-links a{font-family:"IBM Plex Mono",monospace;font-size:.78rem;letter-spacing:.04em;padding:8px 12px;border-radius:7px;color:var(--ink-soft);transition:background .2s,color .2s}
+.nav-links a:hover{background:var(--line-soft);color:var(--ink)}
+.nav-links a.active{color:var(--accent)}
+.nav-cta{font-family:"IBM Plex Mono",monospace;font-size:.76rem;letter-spacing:.05em;padding:9px 16px;border:1px solid var(--ink);border-radius:8px;background:var(--ink);color:var(--bg);transition:transform .15s,opacity .2s}
+.nav-cta:hover{transform:translateY(-1px);opacity:.9}
+.nav-toggle{display:none;width:42px;height:42px;border:1px solid var(--line);border-radius:9px;align-items:center;justify-content:center}
+.nav-toggle span,.nav-toggle span::before,.nav-toggle span::after{content:"";display:block;width:18px;height:1.6px;background:var(--ink);position:relative;transition:transform .25s}
+.nav-toggle span::before{position:absolute;top:-6px}
+.nav-toggle span::after{position:absolute;top:6px}
+.nav.open .nav-toggle span{background:transparent}
+.nav.open .nav-toggle span::before{transform:translateY(6px) rotate(45deg)}
+.nav.open .nav-toggle span::after{transform:translateY(-6px) rotate(-45deg)}
+
+/* HERO */
+.hero{padding:clamp(64px,10vw,130px) 0 clamp(56px,8vw,96px);position:relative;overflow:hidden}
+.hero-grid{display:grid;grid-template-columns:1.15fr .85fr;gap:56px;align-items:center}
+.hero h1{font-size:clamp(2.7rem,7.4vw,5.6rem);font-weight:600;letter-spacing:-0.035em}
+.hero h1 em{font-style:normal;color:var(--accent)}
+.hero .sub{margin-top:26px;font-size:clamp(1.05rem,1.6vw,1.22rem);color:var(--ink-soft);max-width:46ch}
+.hero-meta{margin-top:34px;display:flex;flex-wrap:wrap;gap:10px}
+.hero-meta a{font-family:"IBM Plex Mono",monospace;font-size:.8rem;letter-spacing:.04em;padding:11px 18px;border-radius:9px;border:1px solid var(--ink);transition:transform .15s,background .2s,color .2s}
+.hero-meta a.primary{background:var(--ink);color:var(--bg)}
+.hero-meta a.primary:hover{transform:translateY(-2px)}
+.hero-meta a.ghost:hover{background:var(--ink);color:var(--bg)}
+
+/* SPEC CARD */
+.spec-card{background:var(--dark);color:var(--on-dark);border-radius:16px;padding:26px;box-shadow:0 30px 60px -30px rgba(26,23,20,.55);border:1px solid var(--dark-line);position:relative;overflow:hidden}
+.spec-card::before{content:"";position:absolute;inset:0;background:radial-gradient(120% 80% at 80% 0%,rgba(201,138,60,.16),transparent 60%);pointer-events:none}
+.spec-top{display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid var(--dark-line);padding-bottom:16px;margin-bottom:18px}
+.spec-top .label{font-family:"IBM Plex Mono",monospace;font-size:.66rem;letter-spacing:.18em;text-transform:uppercase;color:var(--on-dark-muted)}
+.spec-badge{font-family:"IBM Plex Mono",monospace;font-size:.62rem;letter-spacing:.06em;padding:4px 10px;border-radius:999px;background:rgba(168,85,31,.25);color:var(--accent-2);border:1px solid rgba(201,138,60,.3)}
+.spec-name{font-family:"Space Grotesk",sans-serif;font-size:1.4rem;font-weight:600;margin-bottom:4px}
+.spec-blurb{font-size:.9rem;color:var(--on-dark-soft);margin-bottom:20px}
+.spec-rows{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.spec-rows .cell{background:var(--dark-2);border:1px solid var(--dark-line);border-radius:10px;padding:12px 14px}
+.spec-rows .cell .k{font-family:"IBM Plex Mono",monospace;font-size:.6rem;letter-spacing:.14em;text-transform:uppercase;color:var(--on-dark-muted)}
+.spec-rows .cell .v{font-family:"IBM Plex Mono",monospace;font-size:1.15rem;font-weight:500;color:var(--on-dark);margin-top:3px}
+.spec-rows .cell .v b{color:var(--accent-2);font-weight:600}
+
+/* PARAMS */
+.param-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
+.param-card{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:20px 18px}
+.param-card .pk{font-family:"IBM Plex Mono",monospace;font-size:.6rem;letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
+.param-card .pv{font-family:"IBM Plex Mono",monospace;font-size:1.5rem;font-weight:600;margin-top:8px;line-height:1.1;color:var(--ink)}
+.param-card .pd{font-size:.86rem;color:var(--ink-soft);margin-top:8px;line-height:1.45}
+
+/* BREW STEPS */
+.brew-steps{display:flex;flex-direction:column}
+.brew-step{display:grid;grid-template-columns:72px 1fr;gap:24px;padding:32px 0;border-bottom:1px solid var(--line)}
+.brew-step:last-child{border-bottom:none}
+.step-num{font-family:"IBM Plex Mono",monospace;font-size:.7rem;letter-spacing:.14em;text-transform:uppercase;color:var(--accent);padding-top:5px}
+.step-body h4{font-size:1.18rem;margin-bottom:8px}
+.step-body p{font-size:.96rem;color:var(--ink-soft);line-height:1.6}
+.step-body .note{margin-top:12px;font-family:"IBM Plex Mono",monospace;font-size:.78rem;color:var(--muted);background:var(--bg-2);border:1px solid var(--line);border-radius:8px;padding:10px 14px}
+
+/* DIAL */
+.dial-table{width:100%;border-collapse:collapse}
+.dial-table th{font-family:"IBM Plex Mono",monospace;font-size:.62rem;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);text-align:left;padding:0 16px 14px 0;font-weight:500}
+.dial-table td{padding:14px 16px 14px 0;border-top:1px solid var(--line);font-size:.94rem;vertical-align:top}
+.dial-table td:first-child{font-family:"IBM Plex Mono",monospace;font-weight:600;color:var(--accent);white-space:nowrap}
+.dial-table td:last-child{color:var(--ink-soft)}
+
+/* TIPS */
+.tips-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+.tip-card{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:24px}
+.tip-card h4{font-size:1rem;margin-bottom:10px}
+.tip-card p{font-size:.9rem;color:var(--ink-soft);line-height:1.55}
+
+/* FOOTER */
+.footer{background:var(--dark);color:var(--on-dark);padding:64px 0 40px}
+.foot-grid{display:grid;grid-template-columns:1.4fr 1fr 1fr;gap:40px;padding-bottom:40px;border-bottom:1px solid var(--dark-line)}
+.foot-brand .brand{color:var(--on-dark)}
+.foot-brand p{color:var(--on-dark-soft);font-size:.9rem;margin-top:14px;max-width:36ch}
+.foot-col h5{font-family:"IBM Plex Mono",monospace;font-size:.64rem;letter-spacing:.16em;text-transform:uppercase;color:var(--on-dark-muted);margin:0 0 14px;font-weight:500}
+.foot-col a{display:block;color:var(--on-dark-soft);font-size:.9rem;padding:5px 0;transition:color .15s}
+.foot-col a:hover{color:var(--accent-2)}
+.foot-bottom{display:flex;justify-content:space-between;align-items:center;padding-top:24px;flex-wrap:wrap;gap:12px}
+.foot-bottom p{font-family:"IBM Plex Mono",monospace;font-size:.68rem;color:var(--on-dark-muted);letter-spacing:.04em}
+
+@media(max-width:980px){
+  .hero-grid{grid-template-columns:1fr;gap:40px}
+  .param-grid{grid-template-columns:1fr 1fr}
+  .tips-grid{grid-template-columns:1fr 1fr}
+  .foot-grid{grid-template-columns:1fr 1fr}
+}
+@media(max-width:760px){
+  body{font-size:16px}
+  .nav-links,.nav-cta{display:none}
+  .nav-toggle{display:flex}
+  .nav.open .nav-links{display:flex;flex-direction:column;position:absolute;top:64px;left:0;right:0;background:var(--bg);border-bottom:1px solid var(--line);padding:14px 28px;gap:2px}
+  .nav.open .nav-links a{padding:13px 8px;font-size:.9rem}
+  .nav.open .nav-cta{display:block;margin-top:8px;text-align:center}
+  .brew-step{grid-template-columns:1fr;gap:8px}
+  .step-num{font-size:.62rem}
+  .tips-grid{grid-template-columns:1fr}
+  .foot-grid{grid-template-columns:1fr}
+}
+@media(prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation:none!important;transition:none!important;scroll-behavior:auto!important}
+  .reveal{opacity:1;transform:none}
+}
+</style>
+</head>
+<body>
+
+<header class="nav" id="nav">
+  <div class="nav-inner">
+    <a href="groundwork.html" class="brand">SIMPLGRINDS<span class="dot"></span><small>FILTER&nbsp;CO.</small></a>
+    <nav class="nav-links" aria-label="Primary">
+      <a href="groundwork.html">Home</a>
+      <a href="groundwork-brewlab.html">Pour-over</a>
+      <a href="groundwork-espresso.html" class="active">Espresso</a>
+      <a href="groundwork-kcup.html">K-Cup</a>
+      <a href="groundwork-frenchpress.html">French Press</a>
+    </nav>
+    <a href="groundwork-brewlab.html" class="nav-cta">Open the lab</a>
+    <button class="nav-toggle" id="navToggle" aria-label="Toggle menu" aria-expanded="false"><span></span></button>
+  </div>
+</header>
+
+<main>
+
+<section class="hero" id="top">
+  <div class="container">
+    <div class="hero-grid">
+      <div class="reveal">
+        <span class="eyebrow">Pressure brewing</span>
+        <h1>Pull a shot worth <em>drinking.</em></h1>
+        <p class="sub">Espresso is the most demanding brew method — small variables become large flavours. This guide covers the grind, dose, tamp, and timing that separate a great shot from a bad one.</p>
+        <div class="hero-meta">
+          <a href="#guide" class="primary">Start the guide ↓</a>
+          <a href="groundwork.html" class="ghost">All methods</a>
+        </div>
+      </div>
+      <div class="reveal">
+        <div class="spec-card">
+          <div class="spec-top">
+            <span class="label">Espresso · parameters</span>
+            <span class="spec-badge">Pressure</span>
+          </div>
+          <div class="spec-name">Espresso</div>
+          <div class="spec-blurb">Nine bars of pressure through a fine, dense puck. Intense, syrupy, and the base for milk drinks.</div>
+          <div class="spec-rows">
+            <div class="cell"><div class="k">Dose → Yield</div><div class="v"><b>18g</b> → 36g</div></div>
+            <div class="cell"><div class="k">Grind</div><div class="v">Very fine</div></div>
+            <div class="cell"><div class="k">Water temp</div><div class="v">93°C</div></div>
+            <div class="cell"><div class="k">Brew time</div><div class="v">27s</div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="params">
+  <div class="container">
+    <div class="sec-head reveal">
+      <span class="eyebrow">Key parameters</span>
+      <h2>The numbers that matter.</h2>
+      <p class="lede">These are the levers. Understanding each one — and what it tastes like when it's wrong — is the whole game.</p>
+    </div>
+    <div class="param-grid reveal">
+      <div class="param-card">
+        <div class="pk">Dose</div>
+        <div class="pv">18–20g</div>
+        <div class="pd">Ground coffee into the basket. Single: 7–9g. Double (standard): 18–20g. Weigh it — don't estimate.</div>
+      </div>
+      <div class="param-card">
+        <div class="pk">Yield (ratio 1:2)</div>
+        <div class="pv">36–40g</div>
+        <div class="pd">Liquid espresso out. A 1:2 ratio means 18g in, 36g out. Weigh your output for consistency.</div>
+      </div>
+      <div class="param-card">
+        <div class="pk">Brew time</div>
+        <div class="pv">25–30s</div>
+        <div class="pd">From first drop to last. Start timing when you press the button, stop when you hit your target yield.</div>
+      </div>
+      <div class="param-card">
+        <div class="pk">Water temp</div>
+        <div class="pv">92–94°C</div>
+        <div class="pd">Lighter roasts pull better at 93–94°C. Darker roasts at 91–92°C. Too hot = bitter; too cool = sour.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section section--alt" id="guide">
+  <div class="container">
+    <div class="sec-head reveal">
+      <span class="eyebrow">Brew guide</span>
+      <h2>Step by step.</h2>
+      <p class="lede">Each step is short. The margin for error is also short. Do them in order, every time, until it's muscle memory.</p>
+    </div>
+    <div class="brew-steps reveal">
+
+      <div class="brew-step">
+        <div class="step-num">Step 01</div>
+        <div class="step-body">
+          <h4>Choose and grind fresh</h4>
+          <p>Use beans roasted within 2–6 weeks. Grind immediately before pulling the shot — espresso goes stale in minutes once ground. Target a grind so fine it resembles powdered sugar, but not flour.</p>
+          <div class="note">Aim: a pinch between two fingers should barely clump. If it flows freely, go finer.</div>
+        </div>
+      </div>
+
+      <div class="brew-step">
+        <div class="step-num">Step 02</div>
+        <div class="step-body">
+          <h4>Dose the basket</h4>
+          <p>Weigh 18–20g into a clean, dry basket. If you're using a single basket, 7–9g. Knock the portafilter gently on your palm to settle the grounds, then level the surface with a straight edge or finger swipe.</p>
+        </div>
+      </div>
+
+      <div class="brew-step">
+        <div class="step-num">Step 03</div>
+        <div class="step-body">
+          <h4>Tamp evenly</h4>
+          <p>Place the tamper on the grounds and apply firm, level pressure — roughly 15–20 kg, straight down. The surface must be flat and parallel to the basket edge. A tilted tamp causes channelling: water rushes through the easy path.</p>
+          <div class="note">Check: the tamped puck surface should look uniform, with no cracks or loose edges.</div>
+        </div>
+      </div>
+
+      <div class="brew-step">
+        <div class="step-num">Step 04</div>
+        <div class="step-body">
+          <h4>Flush and lock in</h4>
+          <p>Run a 2-second flush (blank shot) through the group head to purge old water and stabilise temperature. Lock in the portafilter and place a scale with your cup underneath. Zero the scale.</p>
+        </div>
+      </div>
+
+      <div class="brew-step">
+        <div class="step-num">Step 05</div>
+        <div class="step-body">
+          <h4>Pull the shot</h4>
+          <p>Start the shot and start the timer simultaneously. Watch the flow: it should begin within 5–8 seconds and pour in a steady, thin stream — like warm honey. Stop when the scale reads your target yield (36–40g for an 18g dose).</p>
+          <div class="note">Target: 36g out in 27 seconds for an 18g dose. This is your reference point — adjust from here.</div>
+        </div>
+      </div>
+
+      <div class="brew-step">
+        <div class="step-num">Step 06</div>
+        <div class="step-body">
+          <h4>Taste and dial in</h4>
+          <p>Taste the shot immediately. Use the table below to read what went wrong — or right — and adjust one variable at a time. Never adjust both grind and dose simultaneously.</p>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<section class="section" id="dialin">
+  <div class="container">
+    <div class="sec-head reveal">
+      <span class="eyebrow">Troubleshooting</span>
+      <h2>Read the shot, fix the shot.</h2>
+      <p class="lede">Espresso tells you what's wrong in the cup. Learn the flavour signals and you can fix most problems in one adjustment.</p>
+    </div>
+    <div class="reveal" style="background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:clamp(20px,4vw,40px);overflow-x:auto">
+      <table class="dial-table">
+        <thead>
+          <tr>
+            <th>Shot reads as</th>
+            <th>Likely cause</th>
+            <th>Fix</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td>Sour / sharp</td><td>Under-extracted — too fast or too coarse</td><td>Grind finer, or increase dose by 0.5g</td></tr>
+          <tr><td>Bitter / harsh</td><td>Over-extracted — too slow or too hot</td><td>Grind coarser, or lower water temp by 1°C</td></tr>
+          <tr><td>Thin / watery</td><td>Yield too high — pulled too long</td><td>Stop earlier; reduce target to 32g and taste</td></tr>
+          <tr><td>Intense / syrupy</td><td>Yield too low — pulled too short</td><td>Increase target yield toward 40g</td></tr>
+          <tr><td>Uneven / gushing start</td><td>Channelling — tamped unevenly or basket not level</td><td>Re-tamp; check basket level before locking in</td></tr>
+          <tr><td>Very slow / no flow</td><td>Grind too fine or dose too high</td><td>Go one step coarser; remove 0.5g from dose</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<section class="section section--alt" id="tips">
+  <div class="container">
+    <div class="sec-head reveal">
+      <span class="eyebrow">Pro tips</span>
+      <h2>The details that separate good from great.</h2>
+    </div>
+    <div class="tips-grid reveal">
+      <div class="tip-card">
+        <h4>Weigh everything</h4>
+        <p>A scale under the portafilter is non-negotiable. Scoops lie. Eyeballing lies. 18g in and 36g out, every time, is the only way to get repeatable results.</p>
+      </div>
+      <div class="tip-card">
+        <h4>Change one variable</h4>
+        <p>If you adjust the grind and the dose at the same time, you won't know which one fixed it. Pick one, pull a shot, taste, then decide the next move.</p>
+      </div>
+      <div class="tip-card">
+        <h4>Let your machine warm up</h4>
+        <p>A cold group head kills the shot temperature. Run a blank flush for 20–30 seconds, then let it sit for a minute before pulling. Thermal stability matters more than any other variable.</p>
+      </div>
+      <div class="tip-card">
+        <h4>Keep it clean</h4>
+        <p>Old coffee oils go rancid and ruin fresh shots. Backflush the group head daily; wipe the basket and portafilter after every shot. A clean machine tastes better.</p>
+      </div>
+      <div class="tip-card">
+        <h4>Rest your beans</h4>
+        <p>Beans need to off-gas after roasting. Too fresh (under 5 days) and CO₂ causes uneven extraction and hollow flavour. Too old (over 6 weeks) and they're stale. 2–4 weeks post-roast is the sweet spot.</p>
+      </div>
+      <div class="tip-card">
+        <h4>Use fresh, filtered water</h4>
+        <p>Espresso is 90% water. Mineral-rich water helps extraction; softened or distilled water hurts it. Aim for water around 150 mg/L total dissolved solids.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<footer class="footer">
+  <div class="container">
+    <div class="foot-grid">
+      <div class="foot-brand">
+        <a href="groundwork.html" class="brand">SIMPLGRINDS<span class="dot"></span></a>
+        <p>A brewing guide for every method. Built for the people who weigh their beans and time their pours.</p>
+      </div>
+      <div class="foot-col">
+        <h5>Methods</h5>
+        <a href="groundwork-brewlab.html">Pour-over Lab</a>
+        <a href="groundwork-espresso.html">Espresso</a>
+        <a href="groundwork-kcup.html">K-Cup</a>
+        <a href="groundwork-frenchpress.html">French Press</a>
+      </div>
+      <div class="foot-col">
+        <h5>Tools</h5>
+        <a href="groundwork-brewlab.html#grind">Grind guide</a>
+        <a href="groundwork-brewlab.html#tasting">Tasting wheel</a>
+        <a href="groundwork-brewlab.html#glossary">Glossary</a>
+        <a href="groundwork-brewlab.html#journal">Brew journal</a>
+      </div>
+    </div>
+    <div class="foot-bottom">
+      <p>SIMPLGRINDS · brewing guides for every method</p>
+      <p>Brew responsibly. Stay caffeinated.</p>
+    </div>
+  </div>
+</footer>
+
+<script>
+"use strict";
+(function(){
+  const $ = s => document.querySelector(s);
+  const $$ = s => Array.from(document.querySelectorAll(s));
+  const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const nav = $('#nav'), toggle = $('#navToggle');
+  toggle.addEventListener('click', () => {
+    const open = nav.classList.toggle('open');
+    toggle.setAttribute('aria-expanded', open ? 'true' : 'false');
+  });
+  $$('.nav-links a').forEach(a => a.addEventListener('click', () => {
+    nav.classList.remove('open');
+    toggle.setAttribute('aria-expanded', 'false');
+  }));
+  if (!reduceMotion) {
+    const obs = new IntersectionObserver((entries, o) => {
+      entries.forEach(en => { if (en.isIntersecting) { en.target.classList.add('in'); o.unobserve(en.target); } });
+    }, { rootMargin: '0px 0px -10% 0px', threshold: 0.08 });
+    $$('.reveal').forEach(el => obs.observe(el));
+  } else {
+    $$('.reveal').forEach(el => el.classList.add('in'));
+  }
+})();
+</script>
+</body>
+</html>
