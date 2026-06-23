@@ -9,12 +9,12 @@
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
 :root{
-  --bg:#EFEEE9;--bg-2:#E7E5DE;--surface:#FAF9F6;--ink:#1A1714;--ink-soft:#463F38;
-  --muted:#7C7268;--line:rgba(26,23,20,0.12);--line-soft:rgba(26,23,20,0.07);
-  --accent:#A8551F;--accent-2:#C98A3C;--good:#5C6E3A;
-  --dark:#16130F;--dark-2:#1E1A15;--dark-3:#272118;
-  --dark-line:rgba(237,231,221,0.13);--on-dark:#ECE6DC;
-  --on-dark-soft:#C7BDB0;--on-dark-muted:#8C8275;
+  --bg:#F5F4F2;--bg-2:#ECEAE7;--surface:#FFFFFF;--ink:#0A0908;--ink-soft:#2E2820;
+  --muted:#8A837C;--line:rgba(10,9,8,0.09);--line-soft:rgba(10,9,8,0.04);
+  --accent:#7C3A22;--accent-2:#B8762A;--accent-gold:#D4A857;--good:#3A5C30;
+  --dark:#070605;--dark-2:#0D0C0A;--dark-3:#161410;
+  --dark-line:rgba(245,244,242,0.09);--on-dark:#EDE8DF;
+  --on-dark-soft:#BCB3A8;--on-dark-muted:#78706A;
   --r:10px;--container:1180px;--ease:cubic-bezier(.22,.61,.36,1);
 }
 *{box-sizing:border-box}
@@ -44,7 +44,7 @@ button{font-family:inherit;cursor:pointer;border:none;background:none;color:inhe
 .reveal.in{opacity:1;transform:none}
 
 /* NAV */
-.nav{position:sticky;top:0;z-index:60;background:rgba(239,238,233,.82);backdrop-filter:blur(14px);border-bottom:1px solid var(--line)}
+.nav{position:sticky;top:0;z-index:60;background:rgba(245,244,242,0.92);backdrop-filter:blur(14px);border-bottom:1px solid var(--line)}
 .nav-inner{max-width:var(--container);margin:0 auto;padding:0 28px;height:64px;display:flex;align-items:center;justify-content:space-between;gap:24px}
 .brand{display:flex;align-items:baseline;gap:.5ch;font-family:"Space Grotesk",sans-serif;font-weight:700;font-size:1.18rem;letter-spacing:.02em}
 .brand .dot{width:7px;height:7px;border-radius:50%;background:var(--accent);display:inline-block;transform:translateY(-1px)}
@@ -80,7 +80,7 @@ button{font-family:inherit;cursor:pointer;border:none;background:none;color:inhe
 .hero-stats .st span{font-family:"IBM Plex Mono",monospace;font-size:.68rem;letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
 
 .spec-card{background:var(--dark);color:var(--on-dark);border-radius:16px;padding:26px;box-shadow:0 30px 60px -30px rgba(26,23,20,.55);border:1px solid var(--dark-line);position:relative;overflow:hidden}
-.spec-card::before{content:"";position:absolute;inset:0;background:radial-gradient(120% 80% at 80% 0%,rgba(201,138,60,.16),transparent 60%);pointer-events:none}
+.spec-card::before{content:"";position:absolute;inset:0;background:radial-gradient(120% 80% at 80% 0%,rgba(184,118,42,0.16),transparent 60%);pointer-events:none}
 .spec-top{display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid var(--dark-line);padding-bottom:16px;margin-bottom:18px}
 .spec-top .label{font-family:"IBM Plex Mono",monospace;font-size:.66rem;letter-spacing:.18em;text-transform:uppercase;color:var(--on-dark-muted)}
 .spec-top .live{display:flex;align-items:center;gap:7px;font-family:"IBM Plex Mono",monospace;font-size:.66rem;letter-spacing:.1em;color:var(--on-dark-soft)}
@@ -101,7 +101,7 @@ button{font-family:inherit;cursor:pointer;border:none;background:none;color:inhe
 
 /* LAB */
 .lab{background:var(--dark);color:var(--on-dark);position:relative}
-.lab::before{content:"";position:absolute;inset:0;background:radial-gradient(90% 60% at 12% -5%,rgba(168,85,31,.14),transparent 55%);pointer-events:none}
+.lab::before{content:"";position:absolute;inset:0;background:radial-gradient(90% 60% at 12% -5%,rgba(124,58,34,0.14),transparent 55%);pointer-events:none}
 .lab .container{position:relative}
 .lab-head{max-width:720px}
 .lab-head h2{color:var(--on-dark);font-size:clamp(2rem,4.6vw,3.3rem);margin-top:18px}
@@ -114,12 +114,12 @@ button{font-family:inherit;cursor:pointer;border:none;background:none;color:inhe
 .rd .v{font-family:"IBM Plex Mono",monospace;font-weight:600;font-size:clamp(1.3rem,2.4vw,1.7rem);margin-top:6px;color:var(--on-dark);line-height:1.1}
 .rd .v small{font-size:.62em;font-weight:400;color:var(--on-dark-muted);margin-left:.4ch}
 .rd-pulse{animation:rdPulse .55s var(--ease)}
-@keyframes rdPulse{0%{color:var(--accent-2);text-shadow:0 0 14px rgba(201,138,60,.5)}100%{color:var(--on-dark)}}
+@keyframes rdPulse{0%{color:var(--accent-2);text-shadow:0 0 14px rgba(184,118,42,0.5)}100%{color:var(--on-dark)}}
 .grind-scale{margin-top:14px;position:relative;height:30px}
 .grind-track{position:absolute;top:9px;left:0;right:0;height:4px;border-radius:4px;background:linear-gradient(90deg,#3a3128,#5a4c3b)}
 .grind-ticks{position:absolute;top:5px;left:0;right:0;display:flex;justify-content:space-between}
 .grind-ticks i{width:1px;height:12px;background:var(--dark-line)}
-.grind-marker{position:absolute;top:2px;width:14px;height:14px;border-radius:50%;background:var(--accent-2);border:2px solid var(--dark);transform:translateX(-50%);transition:left .4s var(--ease);box-shadow:0 0 0 3px rgba(201,138,60,.18)}
+.grind-marker{position:absolute;top:2px;width:14px;height:14px;border-radius:50%;background:var(--accent-2);border:2px solid var(--dark);transform:translateX(-50%);transition:left .4s var(--ease);box-shadow:0 0 0 3px rgba(184,118,42,0.18)}
 .grind-labels{display:flex;justify-content:space-between;margin-top:2px;font-family:"IBM Plex Mono",monospace;font-size:.56rem;letter-spacing:.06em;color:var(--on-dark-muted)}
 
 .console-grid{display:grid;grid-template-columns:1.2fr 1fr;gap:20px}
@@ -161,7 +161,7 @@ button{font-family:inherit;cursor:pointer;border:none;background:none;color:inhe
 .notch{flex:1;height:36px;border-radius:8px;border:1px solid var(--dark-line);background:var(--dark-3);transition:all .18s var(--ease);position:relative}
 .notch:hover{border-color:var(--on-dark-muted)}
 .notch.on{background:linear-gradient(180deg,var(--accent),#8a4419);border-color:var(--accent)}
-.notch.on::after{content:"";position:absolute;inset:0;border-radius:7px;box-shadow:0 0 16px rgba(168,85,31,.5)}
+.notch.on::after{content:"";position:absolute;inset:0;border-radius:7px;box-shadow:0 0 16px rgba(124,58,34,0.5)}
 .flavor-grid{display:grid;grid-template-columns:1fr 1fr;gap:9px}
 .flavor-btn{text-align:left;padding:11px 13px;border-radius:10px;border:1px solid var(--dark-line);background:var(--dark-3);transition:all .18s var(--ease)}
 .flavor-btn:hover{border-color:var(--on-dark-muted)}
@@ -186,13 +186,13 @@ button{font-family:inherit;cursor:pointer;border:none;background:none;color:inhe
 .timer-btns{display:flex;gap:10px;margin-top:20px;width:100%}
 .tbtn{flex:1;padding:13px;border-radius:11px;font-family:"IBM Plex Mono",monospace;font-size:.78rem;letter-spacing:.06em;text-transform:uppercase;transition:all .15s;border:1px solid var(--dark-line);background:var(--dark-3);color:var(--on-dark)}
 .tbtn:hover{border-color:var(--on-dark-muted)}
-.tbtn.primary{background:var(--accent-2);color:#1a1208;border-color:var(--accent-2);font-weight:600}
+.tbtn.primary{background:var(--accent-2);color:#0A0908;border-color:var(--accent-2);font-weight:600}
 .tbtn.primary:hover{filter:brightness(1.08)}
 .sound-toggle{margin-top:14px;display:flex;align-items:center;justify-content:center;gap:8px;font-family:"IBM Plex Mono",monospace;font-size:.68rem;letter-spacing:.08em;color:var(--on-dark-muted)}
 .sound-toggle button{width:40px;height:22px;border-radius:999px;background:var(--dark-3);border:1px solid var(--dark-line);position:relative;transition:background .2s}
 .sound-toggle button i{position:absolute;top:2px;left:2px;width:16px;height:16px;border-radius:50%;background:var(--on-dark-muted);transition:all .2s}
 .sound-toggle button.on{background:var(--accent-2)}
-.sound-toggle button.on i{left:20px;background:#1a1208}
+.sound-toggle button.on i{left:20px;background:#0A0908}
 
 .steps{margin-top:20px;background:var(--dark-2);border:1px solid var(--dark-line);border-radius:14px;padding:8px}
 
@@ -202,7 +202,7 @@ button{font-family:inherit;cursor:pointer;border:none;background:none;color:inhe
 .mcard .top{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:14px}
 .mcard h3{font-size:1.35rem}
 .mcard .tag{font-family:"IBM Plex Mono",monospace;font-size:.6rem;letter-spacing:.1em;text-transform:uppercase;padding:5px 9px;border-radius:999px;border:1px solid var(--line);color:var(--muted)}
-.mcard .tag.imm{color:var(--accent);border-color:rgba(168,85,31,.4)}
+.mcard .tag.imm{color:var(--accent);border-color:rgba(124,58,34,0.4)}
 .mcard .tag.perc{color:var(--good);border-color:rgba(92,110,58,.4)}
 .mcard p{font-size:.92rem;color:var(--ink-soft);margin-bottom:18px}
 .mcard .specs{display:grid;grid-template-columns:1fr 1fr;gap:10px;border-top:1px solid var(--line);padding-top:16px}
@@ -357,7 +357,7 @@ button{font-family:inherit;cursor:pointer;border:none;background:none;color:inhe
 .bean-intel-desc{font-size:.82rem;color:var(--on-dark-soft);line-height:1.5;margin-bottom:9px}
 .bean-tag-row{display:flex;flex-wrap:wrap;gap:5px;margin-bottom:8px}
 .btag{font-family:"IBM Plex Mono",monospace;font-size:.6rem;padding:3px 8px;border-radius:999px;border:1px solid var(--dark-line);color:var(--on-dark-soft)}
-.btag.hi{border-color:rgba(201,138,60,.4);color:var(--accent-2)}
+.btag.hi{border-color:rgba(184,118,42,0.4);color:var(--accent-2)}
 .bean-adj{font-family:"IBM Plex Mono",monospace;font-size:.62rem;color:var(--on-dark-muted);padding-top:8px;border-top:1px solid var(--dark-line)}
 .bean-adj b{color:var(--accent-2)}
 .cup-sep{border-top:1px solid var(--dark-line);margin:14px 0 12px}
@@ -370,7 +370,7 @@ button{font-family:inherit;cursor:pointer;border:none;background:none;color:inhe
 /* ENHANCED STEP LIST */
 .step{display:grid;grid-template-columns:28px 1fr auto auto;gap:14px;align-items:start;padding:18px 16px;border-radius:11px;transition:background .2s,box-shadow .2s;border:1px solid transparent}
 .step+.step{border-top:1px solid var(--dark-line);border-radius:0}
-.step.current{background:#2a2218;border:1px solid var(--accent-2);border-radius:11px;box-shadow:0 0 24px -6px rgba(201,138,60,.4)}
+.step.current{background:#2a2218;border:1px solid var(--accent-2);border-radius:11px;box-shadow:0 0 24px -6px rgba(184,118,42,0.4)}
 .step.current+.step{border-top:1px solid transparent}
 .step-num{font-family:"IBM Plex Mono",monospace;font-size:.8rem;color:var(--on-dark-muted);padding-top:3px}
 .step.current .step-num{color:var(--accent-2)}
@@ -386,7 +386,7 @@ button{font-family:inherit;cursor:pointer;border:none;background:none;color:inhe
 .stimer-disp{font-family:"IBM Plex Mono",monospace;font-size:.78rem;color:var(--on-dark-soft);min-width:36px}
 .stimer-btn{font-family:"IBM Plex Mono",monospace;font-size:.66rem;letter-spacing:.05em;padding:5px 11px;border-radius:7px;border:1px solid var(--dark-line);background:var(--dark-2);color:var(--on-dark);transition:all .15s;white-space:nowrap}
 .stimer-btn:hover{border-color:var(--accent-2);color:var(--accent-2)}
-.stimer-btn.st-run{background:rgba(201,138,60,.15);border-color:var(--accent-2);color:var(--accent-2)}
+.stimer-btn.st-run{background:rgba(184,118,42,0.15);border-color:var(--accent-2);color:var(--accent-2)}
 .stimer-btn.st-done{background:rgba(92,110,58,.2);border-color:var(--good);color:var(--good)}
 .step-tgt{font-family:"IBM Plex Mono",monospace;font-size:.86rem;color:var(--accent-2);font-weight:500;white-space:nowrap;padding-top:3px}
 .step.done-row .step-head .st{color:var(--on-dark-muted);text-decoration:line-through;text-decoration-color:var(--on-dark-muted)}
@@ -422,7 +422,7 @@ button{font-family:inherit;cursor:pointer;border:none;background:none;color:inhe
 .fix-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:28px}
 .fix-btn{text-align:left;padding:16px 16px;border-radius:12px;border:1.5px solid var(--line);background:var(--surface);transition:all .18s var(--ease)}
 .fix-btn:hover{border-color:var(--ink);transform:translateY(-2px)}
-.fix-btn.on{border-color:var(--accent);background:rgba(168,85,31,.06)}
+.fix-btn.on{border-color:var(--accent);background:rgba(124,58,34,0.06)}
 .fix-btn .fb-icon{font-size:1.5rem;margin-bottom:6px;display:block}
 .fix-btn .fb-label{font-family:"Space Grotesk",sans-serif;font-weight:600;font-size:.94rem;color:var(--ink);display:block}
 .fix-btn .fb-hint{font-family:"IBM Plex Mono",monospace;font-size:.62rem;letter-spacing:.04em;color:var(--muted);margin-top:3px;display:block}
@@ -447,6 +447,84 @@ button{font-family:inherit;cursor:pointer;border:none;background:none;color:inhe
   *,*::before,*::after{animation:none!important;transition:none!important;scroll-behavior:auto!important}
   .reveal{opacity:1;transform:none}
 }
+
+/* ── SCROLL PROGRESS BAR ── */
+#sg-progress{position:fixed;top:0;left:0;height:2px;width:0%;background:linear-gradient(90deg,var(--accent),var(--accent-2));z-index:999;transition:width .08s linear;pointer-events:none}
+
+/* ── GRAIN TEXTURE OVERLAY ── */
+body::after{content:'';position:fixed;inset:0;pointer-events:none;z-index:9998;opacity:.022;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23n)'/%3E%3C/svg%3E");background-repeat:repeat;background-size:160px;mix-blend-mode:overlay}
+
+/* ── KEYFRAMES ── */
+@keyframes fadeUp{from{opacity:0;transform:translateY(32px);filter:blur(3px)}to{opacity:1;transform:none;filter:blur(0)}}
+@keyframes navIn{from{opacity:0;transform:translateY(-8px)}to{opacity:1;transform:none}}
+@keyframes floatCard{0%,100%{transform:translateY(0)}50%{transform:translateY(-10px)}}
+@keyframes ringGlow{0%,100%{filter:drop-shadow(0 0 4px rgba(184,118,42,0.2))}50%{filter:drop-shadow(0 0 22px rgba(184,118,42,0.65))}}
+@keyframes checkPop{0%{transform:scale(.55)}55%{transform:scale(1.22)}100%{transform:scale(1)}}
+@keyframes stepHighlight{0%{box-shadow:0 0 0 0 rgba(184,118,42,0)}60%{box-shadow:0 0 0 6px rgba(184,118,42,0.22)}100%{box-shadow:0 0 24px -6px rgba(184,118,42,0.4)}}
+@keyframes shimmerSweep{0%{background-position:-200% center}100%{background-position:200% center}}
+@keyframes countUp{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:none}}
+
+/* ── NAV ENTRANCE ── */
+.nav{animation:navIn .5s var(--ease) both}
+
+/* ── HERO STAGGER ── */
+.hero h1{animation:fadeUp .85s var(--ease) .05s both}
+.hero .sub{animation:fadeUp .85s var(--ease) .18s both}
+.hero-meta{animation:fadeUp .85s var(--ease) .3s both}
+.hero-stats{animation:fadeUp .85s var(--ease) .44s both}
+.hero .reveal{animation:none;opacity:1;transform:none;filter:none}
+
+/* ── SPEC CARD FLOAT ── */
+.spec-card{animation:floatCard 7s ease-in-out infinite}
+
+/* ── ENHANCED REVEAL (adds blur) ── */
+.reveal{opacity:0;transform:translateY(26px);filter:blur(2px);transition:opacity .72s var(--ease),transform .72s var(--ease),filter .72s var(--ease)}
+.reveal.in{opacity:1;transform:none;filter:blur(0)}
+
+/* ── NAV LINK UNDERLINE SWEEP ── */
+.nav-links a{position:relative}
+.nav-links a::after{content:'';position:absolute;bottom:4px;left:12px;right:12px;height:1px;background:var(--accent-2);transform:scaleX(0);transform-origin:left;transition:transform .25s var(--ease)}
+.nav-links a:hover::after,.nav-links a.active::after{transform:scaleX(1)}
+
+/* ── METHOD BUTTON RIPPLE ── */
+.method-btn{position:relative;overflow:hidden}
+.method-btn::after{content:'';position:absolute;inset:0;border-radius:inherit;background:radial-gradient(circle at var(--rx,50%) var(--ry,50%),rgba(184,118,42,0.28) 0%,transparent 65%);opacity:0;transition:opacity .4s}
+.method-btn:active::after{opacity:1;transition:opacity 0s}
+
+/* ── TIMER RING GLOW ── */
+.ring-wrap.sg-running{animation:ringGlow 2.2s ease-in-out infinite}
+
+/* ── STEP CHECK BOUNCE ── */
+.step-check.done{animation:checkPop .3s var(--ease) both}
+
+/* ── CURRENT STEP PULSE ── */
+.step.current{animation:stepHighlight .5s var(--ease) forwards}
+
+/* ── READOUT PULSE ENHANCEMENT ── */
+@keyframes rdPulse{0%{color:var(--accent-2);transform:scale(1.06);text-shadow:0 0 12px rgba(184,118,42,0.45)}100%{color:inherit;transform:scale(1);text-shadow:none}}
+
+/* ── SHARE BUTTON SHIMMER ── */
+.share-btn:hover{background:linear-gradient(90deg,var(--dark-3),#232019,var(--dark-3));background-size:200% auto;animation:shimmerSweep 1.4s linear infinite;border-color:var(--accent-2);color:var(--accent-2)}
+
+/* ── HERO STAT COUNTER ── */
+.hero-stats .st b{animation:countUp .6s var(--ease) .6s both}
+.hero-stats .st:nth-child(2) b{animation-delay:.75s}
+.hero-stats .st:nth-child(3) b{animation-delay:.9s}
+
+/* ── PANEL HOVER LIFT ── */
+.panel{transition:box-shadow .22s var(--ease)}
+.panel:hover{box-shadow:0 4px 24px -8px rgba(0,0,0,0.22)}
+
+/* ── FIX BUTTON HOVER SLIDE ── */
+.fix-btn{overflow:hidden;position:relative}
+.fix-btn::before{content:'';position:absolute;left:0;top:0;bottom:0;width:3px;background:var(--accent-2);transform:scaleY(0);transform-origin:bottom;transition:transform .22s var(--ease)}
+.fix-btn:hover::before,.fix-btn.on::before{transform:scaleY(1)}
+
+/* ── MCARD HOVER ── */
+.mcard{transition:transform .25s var(--ease),box-shadow .25s var(--ease),border-color .2s;will-change:transform}
+
+/* ── PILL / CHIP HOVER ── */
+.pill,.chip,.fam{transition:all .18s var(--ease)}
 </style>
 </head>
 <body>
@@ -1140,7 +1218,7 @@ function renderSteps(){
       '</div>'+
       '<div class="step-tgt">'+tgt+'</div>'+
       '<button class="step-check" id="scheck-'+i+'" aria-label="Mark '+p.title+' done" data-i="'+i+'">'+
-        '<svg viewBox="0 0 24 24" fill="none" stroke="#1a1208" stroke-width="3.2"><path d="M4 12l5 5L20 6"/></svg></button>';
+        '<svg viewBox="0 0 24 24" fill="none" stroke="#0A0908" stroke-width="3.2"><path d="M4 12l5 5L20 6"/></svg></button>';
     list.appendChild(row);
   });
 
@@ -1846,6 +1924,37 @@ function init(){
   wireNav(); wireReveal();
 }
 if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',init); else init();
+
+// Scroll progress bar
+(function(){
+  const bar=document.createElement('div');
+  bar.id='sg-progress';
+  document.body.prepend(bar);
+  window.addEventListener('scroll',()=>{
+    const pct=window.scrollY/(document.documentElement.scrollHeight-window.innerHeight)*100;
+    bar.style.width=Math.min(pct,100)+'%';
+  },{passive:true});
+})();
+
+// Timer ring glow toggle
+const _origStart=startPause;
+// Patch ring glow onto timer state — check every animation frame tick
+const _ringWrap=$('.ring-wrap');
+const _origTick=tick;
+// Instead of monkey-patching, observe the startBtn text
+const _startObs=new MutationObserver(()=>{
+  if(_ringWrap) _ringWrap.classList.toggle('sg-running', timer.running);
+});
+if($('#startBtn')) _startObs.observe($('#startBtn'),{childList:true,characterData:true,subtree:true});
+
+// Method button ripple coords
+$$('.method-btn').forEach(btn=>{
+  btn.addEventListener('click', e=>{
+    const r=btn.getBoundingClientRect();
+    btn.style.setProperty('--rx',((e.clientX-r.left)/r.width*100)+'%');
+    btn.style.setProperty('--ry',((e.clientY-r.top)/r.height*100)+'%');
+  });
+});
 })();
 </script>
 </body>
