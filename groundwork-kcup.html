@@ -119,11 +119,49 @@ button{font-family:inherit;cursor:pointer;border:none;background:none;color:inhe
 .foot-bottom{display:flex;justify-content:space-between;align-items:center;padding-top:24px;flex-wrap:wrap;gap:12px}
 .foot-bottom p{font-family:"IBM Plex Mono",monospace;font-size:.68rem;color:var(--on-dark-muted);letter-spacing:.04em}
 
+/* INTERACTIVE SIZE CARDS */
+.size-card{cursor:pointer;transition:all .22s var(--ease)}
+.size-card:hover{transform:translateY(-3px);border-color:var(--accent)}
+.size-card.selected{border-color:var(--accent-2);background:rgba(232,168,74,0.07)}
+.size-card.selected .sz{color:var(--accent-2)}
+.size-card.best.selected{border-color:var(--accent-2)}
+.size-rec{margin-top:24px;padding:18px 22px;border-radius:12px;border:1px solid var(--line-soft);background:rgba(237,231,220,0.04);font-size:.94rem;color:var(--ink-soft);display:none;line-height:1.65}
+.size-rec.visible{display:block}
+.size-rec strong{color:var(--accent-2);font-family:"IBM Plex Mono",monospace;font-size:.88rem}
+
+/* BREW TIMER (K-Cup) */
+.kc-timer{background:var(--surface);border:1px solid var(--line);border-radius:20px;padding:clamp(24px,4vw,40px)}
+.kc-timer-row{display:flex;align-items:center;gap:32px;flex-wrap:wrap}
+.kc-time-display{font-family:"IBM Plex Mono",monospace;font-size:clamp(3rem,8vw,4.8rem);font-weight:600;line-height:1;color:var(--ink);letter-spacing:-.02em;min-width:120px}
+.kc-info{flex:1;min-width:180px}
+.kc-status{font-family:"IBM Plex Mono",monospace;font-size:.78rem;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-bottom:12px;min-height:1.4em}
+.kc-btns{display:flex;gap:10px;flex-wrap:wrap}
+.kc-btn{font-family:"IBM Plex Mono",monospace;font-size:.8rem;letter-spacing:.05em;padding:11px 22px;border-radius:10px;border:1px solid var(--line);cursor:pointer;transition:all .18s var(--ease);background:var(--surface);color:var(--ink-soft)}
+.kc-btn.go{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+.kc-btn.go:hover{opacity:.88;transform:translateY(-1px)}
+.kc-btn:not(.go):hover{border-color:var(--accent);color:var(--accent)}
+.kc-progress{margin-top:20px;height:3px;background:var(--bg-2);border-radius:99px;overflow:hidden}
+.kc-prog-bar{height:100%;background:linear-gradient(90deg,var(--accent),var(--accent-2));border-radius:99px;width:0%;transition:width .4s linear}
+
+/* SYMPTOM CHECKER */
+.symptom-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:28px}
+.sym-btn{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:16px;text-align:left;cursor:pointer;transition:all .2s var(--ease)}
+.sym-btn:hover{border-color:var(--accent);transform:translateY(-2px)}
+.sym-btn.active{border-color:var(--accent-2);background:rgba(232,168,74,0.08)}
+.sym-btn .sb-icon{font-size:1.4rem;margin-bottom:8px;display:block}
+.sym-btn .sb-label{font-family:"IBM Plex Mono",monospace;font-size:.76rem;letter-spacing:.04em;color:var(--ink-soft)}
+.sym-result{display:none;background:var(--bg-2);border:1px solid var(--line);border-radius:14px;padding:24px}
+.sym-result.visible{display:block}
+.sym-result .sr-cause{font-family:"IBM Plex Mono",monospace;font-size:.66rem;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);margin-bottom:8px}
+.sym-result .sr-text{font-size:.96rem;color:var(--ink-soft);line-height:1.65;margin-bottom:14px}
+.sym-result .sr-fix{font-family:"IBM Plex Mono",monospace;font-size:.88rem;color:var(--accent-2);border-left:2px solid var(--accent-2);padding-left:14px}
+
 @media(max-width:980px){
   .hero-grid{grid-template-columns:1fr;gap:40px}
   .size-grid{grid-template-columns:1fr 1fr}
   .tips-grid{grid-template-columns:1fr 1fr}
   .foot-grid{grid-template-columns:1fr 1fr}
+  .symptom-grid{grid-template-columns:1fr 1fr}
 }
 @media(max-width:760px){
   body{font-size:16px}
@@ -135,6 +173,7 @@ button{font-family:inherit;cursor:pointer;border:none;background:none;color:inhe
   .brew-step{grid-template-columns:1fr;gap:8px}
   .tips-grid,.size-grid{grid-template-columns:1fr}
   .foot-grid{grid-template-columns:1fr}
+  .symptom-grid{grid-template-columns:1fr}
 }
 @media(prefers-reduced-motion:reduce){
   *,*::before,*::after{animation:none!important;transition:none!important;scroll-behavior:auto!important}
@@ -228,28 +267,29 @@ button{font-family:inherit;cursor:pointer;border:none;background:none;color:inhe
       <h2>The single biggest choice you make.</h2>
       <p class="lede">Every pod contains the same amount of coffee. The cup size you pick changes how much water runs through it — and that changes the strength entirely.</p>
     </div>
-    <div class="size-grid reveal">
-      <div class="size-card best">
+    <div class="size-grid reveal" id="size-grid">
+      <div class="size-card best" id="sz-6" data-sz="6">
         <div class="sz">6 oz</div>
-        <div class="slabel">Strong — Recommended</div>
-        <div class="sdesc">The smallest setting. Full extraction, concentrated flavour. The cup a K-Cup was designed to make. Start here.</div>
+        <div class="slabel">Recommended</div>
+        <div class="sdesc">Full extraction, concentrated flavour. The cup a K-Cup was designed to make.</div>
       </div>
-      <div class="size-card">
+      <div class="size-card" id="sz-8" data-sz="8">
         <div class="sz">8 oz</div>
         <div class="slabel">Medium</div>
-        <div class="sdesc">A reasonable balance. Slightly lighter than 6 oz but still flavourful for most medium and dark roasts.</div>
+        <div class="sdesc">Slightly lighter than 6 oz but still flavourful for most medium and dark roasts.</div>
       </div>
-      <div class="size-card">
+      <div class="size-card" id="sz-10" data-sz="10">
         <div class="sz">10 oz</div>
         <div class="slabel">Light</div>
-        <div class="sdesc">Noticeably thinner. The grounds are beginning to be under-extracted. Fine for mild pods; weak with light roasts.</div>
+        <div class="sdesc">Noticeably thinner. Fine for mild pods; under-extracted with light roasts.</div>
       </div>
-      <div class="size-card">
+      <div class="size-card" id="sz-12" data-sz="12">
         <div class="sz">12 oz</div>
         <div class="slabel">Very light</div>
-        <div class="sdesc">Hot water with coffee flavouring. The pod was not designed for this volume. Use the 6 oz setting and add hot water if you want a larger drink.</div>
+        <div class="sdesc">Hot water with coffee flavouring. Use 6 oz instead and add hot water after if you want a larger drink.</div>
       </div>
     </div>
+    <div class="size-rec" id="size-rec"></div>
   </div>
 </section>
 
@@ -258,7 +298,7 @@ button{font-family:inherit;cursor:pointer;border:none;background:none;color:inhe
     <div class="sec-head reveal">
       <span class="eyebrow">Brew guide</span>
       <h2>Step by step.</h2>
-      <p class="lede">There's not much to change — but what you can control, you should. These steps ensure you're getting the best result your machine can give.</p>
+      <p class="lede">There's not much to change — but what you can control, you should. Follow the steps, then run the 60-second timer once the pod is in.</p>
     </div>
     <div class="brew-steps reveal">
 
@@ -290,28 +330,25 @@ button{font-family:inherit;cursor:pointer;border:none;background:none;color:inhe
       <div class="brew-step">
         <div class="step-num">Step 04</div>
         <div class="step-body">
-          <h4>Set the smallest cup size</h4>
-          <p>Lift the handle, drop in the pod, and close it firmly. Select 6 oz for the strongest, most flavour-forward cup. If 6 oz is too intense for your taste, brew at 6 oz and add hot water separately — this is called the Americano method and preserves more flavour than brewing at 10 oz.</p>
+          <h4>Set the smallest cup size and brew</h4>
+          <p>Lift the handle, drop in the pod, and close it firmly. Select 6 oz for the strongest, most flavour-forward cup. Press brew — then start the timer below.</p>
         </div>
       </div>
 
-      <div class="brew-step">
-        <div class="step-num">Step 05</div>
-        <div class="step-body">
-          <h4>Brew and serve immediately</h4>
-          <p>Press brew. The whole process takes under 60 seconds. Drink the cup right away — K-Cup coffee has no thermal carafe to keep it hot, and it turns bitter and stale within 20 minutes of brewing.</p>
-          <div class="note">Don't let it sit. Brew, drink, done.</div>
+    </div>
+
+    <div class="kc-timer reveal" style="margin-top:40px">
+      <div class="kc-timer-row">
+        <div class="kc-time-display" id="kc-display">0:00</div>
+        <div class="kc-info">
+          <div class="kc-status" id="kc-status">Hit start once the pod is in and you've pressed brew.</div>
+          <div class="kc-btns">
+            <button class="kc-btn go" id="kc-start">▶ Start</button>
+            <button class="kc-btn" id="kc-reset">↺ Reset</button>
+          </div>
         </div>
       </div>
-
-      <div class="brew-step">
-        <div class="step-num">Step 06</div>
-        <div class="step-body">
-          <h4>Clean the needle monthly</h4>
-          <p>The entry and exit needles that pierce the pod get clogged with coffee grounds over time. Use the Keurig needle-cleaning tool (or a straightened paperclip) to clear the holes. A clogged needle reduces flow and makes the cup taste over-extracted and bitter.</p>
-        </div>
-      </div>
-
+      <div class="kc-progress"><div class="kc-prog-bar" id="kc-bar"></div></div>
     </div>
   </div>
 </section>
@@ -319,34 +356,36 @@ button{font-family:inherit;cursor:pointer;border:none;background:none;color:inhe
 <section class="section" id="tips">
   <div class="container">
     <div class="sec-head reveal">
-      <span class="eyebrow">Tips</span>
+      <span class="eyebrow">Troubleshooter</span>
+      <h2>Something taste off?</h2>
+      <p class="lede">Tap what your cup is doing — get the fix in one click.</p>
+    </div>
+    <div class="reveal">
+      <div class="symptom-grid">
+        <button class="sym-btn" data-sym="weak"><span class="sb-icon">💧</span><span class="sb-label">Weak / watery</span></button>
+        <button class="sym-btn" data-sym="bitter"><span class="sb-icon">😬</span><span class="sb-label">Bitter / harsh</span></button>
+        <button class="sym-btn" data-sym="flat"><span class="sb-icon">😶</span><span class="sb-label">Flat / no flavour</span></button>
+        <button class="sym-btn" data-sym="sour"><span class="sb-icon">😖</span><span class="sb-label">Sour / sharp</span></button>
+        <button class="sym-btn" data-sym="cold"><span class="sb-icon">🧊</span><span class="sb-label">Not hot enough</span></button>
+        <button class="sym-btn" data-sym="slow"><span class="sb-icon">🐌</span><span class="sb-label">Brews slowly</span></button>
+      </div>
+      <div class="sym-result" id="sym-result">
+        <div class="sr-cause" id="sr-cause"></div>
+        <div class="sr-text" id="sr-text"></div>
+        <div class="sr-fix" id="sr-fix"></div>
+      </div>
+    </div>
+    <div class="sec-head reveal" style="margin-top:clamp(48px,7vw,90px)">
+      <span class="eyebrow">Pro tips</span>
       <h2>Small changes, noticeably better cup.</h2>
     </div>
     <div class="tips-grid reveal">
-      <div class="tip-card">
-        <h4>Descale every 3 months</h4>
-        <p>Mineral scale insulates the heating element, making the water cooler and brew time longer. Most Keurig models have a descale mode — run it with descaling solution or a 1:1 white vinegar and water mix, then run two full water cycles to rinse.</p>
-      </div>
-      <div class="tip-card">
-        <h4>Try reusable pods</h4>
-        <p>A reusable K-Cup filter lets you use freshly ground coffee of your choice. Grind medium-fine, fill to just below the rim, and don't pack it tightly. The results are noticeably better than any pre-ground pod.</p>
-      </div>
-      <div class="tip-card">
-        <h4>Match the roast to your size</h4>
-        <p>Light roasts brewed at 6 oz can taste sharp and sour — they're designed for smaller doses. Dark roasts hold up better to larger sizes. If you prefer a 10 oz cup, choose a medium-dark or dark roast pod.</p>
-      </div>
-      <div class="tip-card">
-        <h4>Strong mode, if you have it</h4>
-        <p>Many Keurig models have a "Strong" or "High Altitude" button that slows the brew cycle by 30–45 seconds. This increases extraction time and produces a noticeably fuller, more flavourful cup without changing the volume.</p>
-      </div>
-      <div class="tip-card">
-        <h4>Keep the lid closed</h4>
-        <p>Don't lift the handle while water is still dripping through the pod. Opening it mid-brew drops pressure, dilutes the last portion of the cup, and can spray grounds. Wait for the full cycle to finish.</p>
-      </div>
-      <div class="tip-card">
-        <h4>Wipe the pod holder weekly</h4>
-        <p>The pod holder and drip tray accumulate coffee oils and water. A quick wipe with a damp cloth prevents off-flavours from transferring to your next brew. The pod holder is usually dishwasher safe — check your model's manual.</p>
-      </div>
+      <div class="tip-card"><h4>Descale every 3 months</h4><p>Mineral scale insulates the heating element, making the water cooler and brew time longer. Run descaling solution or 1:1 white vinegar and water, then two full water rinse cycles.</p></div>
+      <div class="tip-card"><h4>Try reusable pods</h4><p>A reusable K-Cup filter lets you use freshly ground coffee of your choice. Grind medium-fine, fill to just below the rim, and don't pack it tightly. The results are noticeably better than any pre-ground pod.</p></div>
+      <div class="tip-card"><h4>Strong mode, if you have it</h4><p>Many Keurig models have a "Strong" button that slows the brew cycle by 30–45 seconds. This increases extraction time and produces a noticeably fuller, more flavourful cup without changing the volume.</p></div>
+      <div class="tip-card"><h4>Match roast to size</h4><p>Light roasts at 6 oz can taste sharp and sour. Dark roasts hold up better to larger sizes. If you prefer 10 oz, choose a medium-dark or dark roast pod.</p></div>
+      <div class="tip-card"><h4>Keep the lid closed</h4><p>Don't lift the handle while water is still dripping. Opening mid-brew drops pressure and can spray grounds. Wait for the full cycle to finish.</p></div>
+      <div class="tip-card"><h4>Clean the needle monthly</h4><p>The entry and exit needles get clogged with grounds over time. Use the Keurig needle-cleaning tool or a straightened paperclip to clear the holes. A clogged needle makes the cup over-extracted and bitter.</p></div>
     </div>
   </div>
 </section>
@@ -405,6 +444,83 @@ button{font-family:inherit;cursor:pointer;border:none;background:none;color:inhe
   } else {
     $$('.reveal').forEach(el => el.classList.add('in'));
   }
+
+// ── K-CUP SIZE SELECTOR ──
+const KC_REC = {
+  '6': { strong:'Best choice for any roast. Full extraction, full flavour — exactly what this pod was designed for.', fix:'Use as-is. This is your baseline. If it tastes strong, adjust at the cup with a splash of hot water.' },
+  '8': { strong:'Good for medium and dark roasts. Slightly diluted versus 6 oz but acceptable for everyday drinking.', fix:'If it tastes weak, switch to 6 oz and dilute with hot water after. If bitter, try a lighter roast pod.' },
+  '10':{ strong:'Under-extracted at this volume. Works passably for dark roast pods only.', fix:'For light or medium roasts, brew 6 oz and add 4 oz of hot water separately — better flavour, same final volume.' },
+  '12':{ strong:'Too much water for the amount of coffee in a K-Cup. The result will be thin and flavourless.', fix:'Always brew 6 oz. Add hot water to reach 12 oz. Do not use the 12 oz setting directly.' }
+};
+$$('.size-card').forEach(card=>{
+  card.addEventListener('click',()=>{
+    $$('.size-card').forEach(c=>c.classList.remove('selected'));
+    card.classList.add('selected');
+    const sz=card.dataset.sz;
+    const rec=KC_REC[sz];
+    if(!rec) return;
+    const el=$('#size-rec');
+    if(el){ el.innerHTML=`<strong>${sz} oz —</strong> ${rec.strong}<br><br><em style="font-size:.88rem;color:var(--accent-2)">${rec.fix}</em>`; el.classList.add('visible'); }
+  });
+});
+
+// ── K-CUP BREW TIMER ──
+const KC_DUR = 60;
+let kct = { on:false, start:null, raf:null };
+function kcFmt(s){ const t=Math.max(0,Math.floor(KC_DUR-s)); return Math.floor(t/60)+':'+(t%60+'').padStart(2,'0'); }
+function kcDraw(){
+  const s=(performance.now()-kct.start)/1000;
+  const done=s>=KC_DUR;
+  if($('#kc-display')) $('#kc-display').textContent=done?'Done!':kcFmt(s);
+  if($('#kc-bar')) $('#kc-bar').style.width=Math.min(s/KC_DUR*100,100)+'%';
+  if($('#kc-status')) $('#kc-status').textContent=done?'Brew complete — drink immediately.':s<15?'Brewing…':'Almost done…';
+  if($('#kc-start')) $('#kc-start').textContent=done?'▶ New brew':kct.on?'⏸ Pause':'▶ Resume';
+  if(kct.on && !done) kct.raf=requestAnimationFrame(kcDraw);
+  if(done && kct.on) kct.on=false;
+}
+function kcReset(){
+  cancelAnimationFrame(kct.raf); kct={on:false,start:null,raf:null};
+  if($('#kc-display')) $('#kc-display').textContent='0:00';
+  if($('#kc-bar')) $('#kc-bar').style.width='0%';
+  if($('#kc-status')) $('#kc-status').textContent='Hit start once the pod is in and you\'ve pressed brew.';
+  if($('#kc-start')) $('#kc-start').textContent='▶ Start';
+}
+if($('#kc-start')){
+  $('#kc-start').addEventListener('click',()=>{
+    const elapsed=kct.start?(performance.now()-kct.start)/1000:KC_DUR+1;
+    const done=elapsed>=KC_DUR;
+    if(done){ kcReset(); return; }
+    if(kct.on){ kct.on=false; cancelAnimationFrame(kct.raf); $('#kc-start').textContent='▶ Resume'; }
+    else { if(!kct.start) kct.start=performance.now(); kct.on=true; kcDraw(); }
+  });
+  $('#kc-reset').addEventListener('click', kcReset);
+}
+
+// ── K-CUP SYMPTOM CHECKER ──
+const KC_SYM = {
+  weak:   { cause:'Cup size too large / grind too coarse', text:'The pod only contains ~10g of pre-ground coffee. Brewing at 10–12 oz forces too much water through it, leaving the cup thin and under-flavoured.', fix:'Switch to 6 oz setting. Brew strong, dilute with hot water after if needed.' },
+  bitter: { cause:'Over-extraction / machine needs descaling', text:'A dirty or scaled machine lets water linger in the puck longer than it should, over-extracting the coffee and adding a burnt, harsh edge.', fix:'Descale the machine. Check brew time — if it\'s over 90s, scale is the problem. Try a lighter roast pod.' },
+  flat:   { cause:'Stale pod / stale machine', text:'Old pods (past best-by date) or residue in the machine from previous brews kill flavour. Coffee oils go rancid and coat the taste of fresh pods.', fix:'Check the pod\'s best-by date. Run a clean water cycle. Wipe pod holder and drip tray.' },
+  sour:   { cause:'Machine too cool / light roast at high volume', text:'Cool water under-extracts coffee, leaving bright acids behind and producing a sharp, sour taste. Light roast pods are more prone to this at larger sizes.', fix:'Run a full water-only cycle to fully heat the machine before brewing. Use 6 oz. Try a medium or dark roast pod.' },
+  cold:   { cause:'Cold mug / water not fully heated', text:'A cold ceramic mug drops the brew temperature by 8–12°C the moment coffee hits it. If the machine hasn\'t warmed up fully, the water is also cooler than target.', fix:'Run a water-only cycle first. Pre-warm your mug with hot water for 30 seconds before brewing.' },
+  slow:   { cause:'Clogged needle / scale buildup', text:'Clogged entry or exit needles restrict flow and extend brew time well past 60 seconds, over-extracting and producing bitter cups.', fix:'Clean the needles with the Keurig tool or a paperclip. Descale if clogging is recurring.' }
+};
+$$('.sym-btn').forEach(btn=>{
+  btn.addEventListener('click',()=>{
+    $$('.sym-btn').forEach(b=>b.classList.remove('active'));
+    btn.classList.add('active');
+    const sym=btn.dataset.sym;
+    const d=KC_SYM[sym];
+    if(!d) return;
+    const el=$('#sym-result');
+    if(el){
+      el.querySelector('#sr-cause').textContent=d.cause;
+      el.querySelector('#sr-text').textContent=d.text;
+      el.querySelector('#sr-fix').textContent='→ '+d.fix;
+      el.classList.add('visible');
+    }
+  });
+});
 })();
 </script>
 </body>

@@ -120,6 +120,24 @@ button{font-family:inherit;cursor:pointer;border:none;background:none;color:inhe
 .foot-bottom{display:flex;justify-content:space-between;align-items:center;padding-top:24px;flex-wrap:wrap;gap:12px}
 .foot-bottom p{font-family:"IBM Plex Mono",monospace;font-size:.68rem;color:var(--on-dark-muted);letter-spacing:.04em}
 
+/* BREW TIMER */
+.brew-timer{background:var(--surface);border:1px solid var(--line);border-radius:20px;padding:clamp(28px,4vw,44px)}
+.bt-eyebrow{font-family:"IBM Plex Mono",monospace;font-size:.68rem;letter-spacing:.18em;text-transform:uppercase;color:var(--accent);margin-bottom:14px}
+.bt-display{font-family:"IBM Plex Mono",monospace;font-size:clamp(3.5rem,9vw,6rem);font-weight:600;line-height:1;color:var(--ink);letter-spacing:-.02em;margin-bottom:6px;transition:color .3s}
+.bt-display.phase-end{color:var(--accent-2)}
+.bt-hint{font-size:.96rem;color:var(--ink-soft);min-height:1.6em;margin-bottom:22px}
+.bt-bar-wrap{background:var(--bg-2);border-radius:99px;height:3px;margin-bottom:26px;overflow:hidden}
+.bt-bar{height:100%;background:linear-gradient(90deg,var(--accent),var(--accent-2));border-radius:99px;width:0%;transition:width .4s linear}
+.bt-btns{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:24px}
+.bt-btn{font-family:"IBM Plex Mono",monospace;font-size:.8rem;letter-spacing:.05em;padding:11px 22px;border-radius:10px;border:1px solid var(--line);cursor:pointer;transition:all .18s var(--ease);background:var(--surface);color:var(--ink-soft)}
+.bt-btn.go{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+.bt-btn.go:hover{opacity:.88;transform:translateY(-1px)}
+.bt-btn:not(.go):hover{border-color:var(--accent);color:var(--accent)}
+.bt-ms-row{display:flex;gap:8px;flex-wrap:wrap;border-top:1px solid var(--line);padding-top:18px}
+.bt-ms{font-family:"IBM Plex Mono",monospace;font-size:.68rem;letter-spacing:.05em;padding:5px 12px;border-radius:999px;border:1px solid var(--line);color:var(--muted);transition:all .3s var(--ease)}
+.bt-ms.active{border-color:var(--accent-2);color:var(--accent-2);background:rgba(232,168,74,0.1)}
+.bt-ms.done{border-color:var(--good);color:var(--good);background:rgba(106,144,96,0.09)}
+
 @media(max-width:980px){
   .hero-grid{grid-template-columns:1fr;gap:40px}
   .param-grid{grid-template-columns:1fr 1fr}
@@ -225,6 +243,32 @@ button{font-family:inherit;cursor:pointer;border:none;background:none;color:inhe
     <path class="hfp-s3" d="M74 72 C78 59 70 46 74 33" stroke="rgba(242,208,144,0.55)" stroke-width="1.5" stroke-linecap="round"/>
   </svg>
 </div>
+    </div>
+  </div>
+</section>
+
+<section class="section section--alt" id="timer">
+  <div class="container">
+    <div class="sec-head reveal">
+      <span class="eyebrow">Interactive timer</span>
+      <h2>Follow the clock.</h2>
+      <p class="lede">Hit start when you add your coffee. The timer walks you through every phase — bloom, steep, plunge — so you never have to glance at your phone.</p>
+    </div>
+    <div class="brew-timer reveal">
+      <div class="bt-eyebrow" id="fp-phase">Ready to brew · 5:00 total</div>
+      <div class="bt-display" id="fp-display">0:00</div>
+      <div class="bt-hint" id="fp-hint">Preheat the press with hot water, swirl and discard. Then add 30g of coarse coffee.</div>
+      <div class="bt-bar-wrap"><div class="bt-bar" id="fp-bar"></div></div>
+      <div class="bt-btns">
+        <button class="bt-btn go" id="fp-start">▶ Start brew</button>
+        <button class="bt-btn" id="fp-reset">↺ Reset</button>
+      </div>
+      <div class="bt-ms-row">
+        <span class="bt-ms" id="fp-ms0">0:30 · bloom</span>
+        <span class="bt-ms" id="fp-ms1">1:00 · filled</span>
+        <span class="bt-ms" id="fp-ms2">4:30 · steep done</span>
+        <span class="bt-ms" id="fp-ms3">5:00 · plunged</span>
+      </div>
     </div>
   </div>
 </section>
@@ -429,6 +473,65 @@ button{font-family:inherit;cursor:pointer;border:none;background:none;color:inhe
   } else {
     $$('.reveal').forEach(el => el.classList.add('in'));
   }
+
+// ── FRENCH PRESS TIMER ──
+const FP_PHASES = [
+  { dur:30,  label:'Bloom',       hint:'Stir gently to wet all grounds, then wait.' },
+  { dur:30,  label:'Fill',        hint:'Pour the remaining water in a slow spiral to 450g.' },
+  { dur:210, label:'Steep',       hint:'Lid on, plunger up. Leave it completely undisturbed.' },
+  { dur:30,  label:'Plunge',      hint:'Press slowly and steadily — 20 to 30 seconds.' },
+  { dur:0,   label:'Done — pour!',hint:'Pour every drop into cups or a carafe immediately.' }
+];
+const FP_MS = [30, 60, 270, 300];
+const FP_TOTAL = 300;
+let fpt = { on:false, start:null, off:0, raf:null };
+
+function fpSec(){ return fpt.on ? fpt.off + (performance.now()-fpt.start)/1000 : fpt.off; }
+function fpFmt(s){ const t=Math.max(0,Math.floor(s)); return Math.floor(t/60)+':'+(t%60+'').padStart(2,'0'); }
+function fpPhase(s){ let a=0; for(let i=0;i<FP_PHASES.length-1;i++){ if(s<a+FP_PHASES[i].dur) return{i,w:s-a}; a+=FP_PHASES[i].dur; } return{i:FP_PHASES.length-1,w:0}; }
+
+function fpDraw(){
+  const s = fpSec();
+  const {i,w} = fpPhase(s);
+  const p = FP_PHASES[i];
+  const done = i === FP_PHASES.length-1;
+  $('#fp-display').textContent = fpFmt(s);
+  $('#fp-phase').textContent = done ? '✓ Complete' : `Phase ${i+1} — ${p.label}`;
+  $('#fp-hint').textContent = p.hint;
+  $('#fp-bar').style.width = (done ? 100 : p.dur > 0 ? Math.min(w/p.dur*100,100) : 100)+'%';
+  $('#fp-start').textContent = done ? '↺ Brew again' : fpt.on ? '⏸ Pause' : '▶ Resume';
+  FP_MS.forEach((ms,idx)=>{
+    const el = $('#fp-ms'+idx);
+    if(!el) return;
+    if(s >= ms) el.className='bt-ms done';
+    else if(i === idx || (idx===0&&s<30&&s>0)) el.className='bt-ms active';
+    else el.className='bt-ms';
+  });
+  if(fpt.on && !done) fpt.raf = requestAnimationFrame(fpDraw);
+  if(done && fpt.on) fpt.on = false;
+}
+
+function fpReset(){
+  cancelAnimationFrame(fpt.raf);
+  fpt={on:false,start:null,off:0,raf:null};
+  $('#fp-display').textContent='0:00';
+  $('#fp-phase').textContent='Ready to brew · 5:00 total';
+  $('#fp-hint').textContent='Preheat the press with hot water, swirl and discard. Then add 30g of coarse coffee.';
+  $('#fp-bar').style.width='0%';
+  $('#fp-start').textContent='▶ Start brew';
+  [0,1,2,3].forEach(i=>{ const e=$('#fp-ms'+i); if(e) e.className='bt-ms'; });
+}
+
+if($('#fp-start')){
+  $('#fp-start').addEventListener('click',()=>{
+    const s = fpSec();
+    const done = fpPhase(s).i === FP_PHASES.length-1;
+    if(done){ fpReset(); return; }
+    if(fpt.on){ fpt.off=fpSec(); fpt.on=false; cancelAnimationFrame(fpt.raf); }
+    else { fpt.start=performance.now(); fpt.on=true; fpDraw(); }
+  });
+  $('#fp-reset').addEventListener('click', fpReset);
+}
 })();
 </script>
 </body>
